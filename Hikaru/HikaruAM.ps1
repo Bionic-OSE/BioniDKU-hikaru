@@ -1,5 +1,7 @@
 # BioniDKU Administrative Menu (codenamed "HikaruAM") - (c) Bionic Butter
+
 $host.UI.RawUI.WindowTitle = "BioniDKU Administrative Menu"
+$update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
 
 function Show-Branding {
 	Clear-Host
@@ -10,10 +12,9 @@ function Get-SystemSwitches {
 	$nr = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer").DisallowRun
 	$ncp = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer").NoControlPanel
 	$ntcm = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer").NoTrayContextMenu
-	$nlck = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\SessionData").AllowLockScreen
-	if ($nr -eq 1 -and $ncp -eq 1 -and $ntcm -eq 1 -and $nlck -eq 1) {
+	if ($nr -eq 1 -and $ncp -eq 1 -and $ntcm -eq 1) {
 		$nall = 'ENABLED'
-	} elseif ($nr -eq 0 -and $ncp -eq 0 -and $ntcm -eq 0 -and $nlck -eq 0) {
+	} elseif ($nr -eq 0 -and $ncp -eq 0 -and $ntcm -eq 0) {
 		$nall = 'DISABLED'
 	} else {
 		$nall = 'UNKNOWN - select this to enable'
@@ -22,11 +23,15 @@ function Get-SystemSwitches {
 }
 function Show-Menu {
 	Show-Branding
+	if ($update -eq 1) {
+		Write-Host "9. An update is available, select this option for more information" -ForegroundColor Yellow
+		Write-Host " "
+	}
 	Write-Host "Becareful with what you are doing!" -ForegroundColor Magenta
 	$lock = Get-SystemSwitches
-	Write-Host "1. Restart Explorer shell"
-	Write-Host "2. Enable/Disable Lockdown (currently " -n; Write-Host "$lock" -ForegroundColor White -n; Write-Host ")"
-	Write-Host "3. Open a Command Prompt window"
+	Write-Host "1. Restart Explorer shell" -ForegroundColor White
+	Write-Host "2. Enable/Disable Lockdown (currently " -ForegroundColor White -n; Write-Host "$lock" -ForegroundColor Cyan -n; Write-Host ")"
+	Write-Host "3. Open a Command Prompt window" -ForegroundColor White
 	if ($lock -eq "DISABLED") {Write-Host "4. Configure list of blocked applications"}
 	Write-Host "0. Close this menu"
 	Write-Host ' '
@@ -68,7 +73,6 @@ function Switch-Lockdown {
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name DisallowRun -Value 0 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 0 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 0 -Type DWord
-		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\SessionData" -Name AllowLockScreen -Value 0 -Type DWord
 		gpupdate.exe
 		Copy-Item "$env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.exe" -Destination "$env:SYSTEMDRIVE\Windows\System32"
 		Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.cfg"
@@ -86,7 +90,6 @@ function Switch-Lockdown {
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name DisallowRun -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 1 -Type DWord
-		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\LogonUI\SessionData" -Name AllowLockScreen -Value 1 -Type DWord
 		gpupdate.exe
 		taskkill /f /im ApplicationFrameHost.exe
 		takeown /f "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
@@ -129,6 +132,12 @@ while($menu -eq $true) {
 				Show-Branding
 				Write-Host "This feature is currently in development. Press Enter to return to the menu."
 				Read-Host
+			}
+		}
+		{$unem -like "9"} {
+			if ($update -eq 1) {
+				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshow.exe
+				exit
 			}
 		}
 	}

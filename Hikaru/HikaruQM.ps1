@@ -1,5 +1,6 @@
 # BioniDKU Quick Menu (codenamed "HikaruQM") - (c) Bionic Butter
 $host.UI.RawUI.WindowTitle = "BioniDKU Quick Menu"
+$update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
 
 function Show-Branding {
 	Clear-Host
@@ -8,9 +9,13 @@ function Show-Branding {
 }
 function Show-Menu {
 	Show-Branding
-	Write-Host "Hi! If you're wondering where did all the options go, try pressing Ctrl+Alt+Shift+A." -ForegroundColor Magenta
-	Write-Host "1. Restart Explorer shell"
-	Write-Host "0. Close this menu"
+	if ($update -eq 1) {
+		Write-Host "9. An update is available, select this option for more information" -ForegroundColor White
+		Write-Host " "
+	}
+	Write-Host "What do you want to do?" -ForegroundColor White
+	Write-Host "1. Restart Explorer shell" -ForegroundColor White
+	Write-Host "0. Close this menu" -ForegroundColor White
 	Write-Host ' '
 }
 function Restart-HikaruShell {	
@@ -43,6 +48,12 @@ while($menu -eq $true) {
 		{$unem -like "0"} {exit}
 		{$unem -like "1"} {
 			$menu = Confirm-RestartShell
+		}
+		{$unem -like "9"} {
+			if ($update -eq 1) {
+				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshow.exe
+				exit
+			}
 		}
 	}
 }
