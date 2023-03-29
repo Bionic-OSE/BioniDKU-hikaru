@@ -11,33 +11,29 @@ Write-Host "An update is available:" -ForegroundColor White; Write-Host " "
 
 function Start-Hikarefreshing {
 	Show-Branding
-	Write-Host "Got it, proceeding to update" -ForegroundColor White; Write-Host " "
+	Write-Host "Got it, proceeding to update (Stage 1/2)" -ForegroundColor White; Write-Host " "
+	Start-Sleep -Seconds 3
 	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikaru.7z.old") -eq $true) {Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikaru.7z.old" -Force}
 	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikare.7z.old") -eq $true) {Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikare.7z.old" -Force}
 	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikaru.7z") -eq $true) {Rename-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikaru.7z" -NewName Hikaru.7z.old}
 	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikare.7z") -eq $true) {Rename-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikare.7z" -NewName Hikare.7z.old}
 	while ($true) {
-		Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-utils/releases/latest/download/Hikaru.7z" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic"
+		Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikaru.7z" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic"
 		if (Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikaru.7z" -PathType Leaf) {break} else {
 			Write-Host " "
 			Write-Host -ForegroundColor White "Did the transfer fail?" -n; Write-Host " Retrying..."
 		}
 	}
-	Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\7za.exe -Wait -NoNewWindow -ArgumentList "e $env:SYSTEMDRIVE\Bionic\Hikaru.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa"
-	& $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarefreshed.ps1
-	if ($hardupdate) {
-		while ($true) {
-			Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-utils/releases/latest/download/Hikare.7z" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic"
-			if (Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikare.7z" -PathType Leaf) {break} else {
-				Write-Host " "
-				Write-Host -ForegroundColor White "Did the transfer fail?" -n; Write-Host " Retrying..."
-			}
+	Start-Process 7za -Wait -NoNewWindow -ArgumentList "x $env:SYSTEMDRIVE\Bionic\Hikaru.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa"
+	while ($true) {
+		Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikare.7z" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic"
+		if (Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikare.7z" -PathType Leaf) {break} else {
+			Write-Host " "
+			Write-Host -ForegroundColor White "Did the transfer fail?" -n; Write-Host " Retrying..."
 		}
-		Start-Process powershell -ArgumentList "-Command `"Start-Sleep -Seconds 5; Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\7za.exe -ArgumentList `"e $env:SYSTEMDRIVE\Bionic\Hikare.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa`"; Write-Host `" `"; Write-Host `"Update complete`" -ForegroundColor Black -BackgroundColor White; Start-Sleep -Seconds 5`""
-		exit
 	}
-	Write-Host " "; Write-Host "Update complete" -ForegroundColor Black -BackgroundColor White
-	Start-Sleep -Seconds 5
+	Start-Process powershell -ArgumentList "-Command $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshard.ps1"
+	exit
 }
 
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1

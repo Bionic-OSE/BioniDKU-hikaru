@@ -32,8 +32,8 @@ function Show-Menu {
 	Write-Host "1. Restart Explorer shell" -ForegroundColor White
 	Write-Host "2. Enable/Disable Lockdown (currently " -ForegroundColor White -n; Write-Host "$lock" -ForegroundColor Cyan -n; Write-Host ")"
 	Write-Host "3. Open a Command Prompt window" -ForegroundColor White
-	if ($lock -eq "DISABLED") {Write-Host "4. Configure list of blocked applications"}
-	Write-Host "0. Close this menu"
+	if ($lock -eq "DISABLED") {Write-Host "4. Configure list of blocked applications" -ForegroundColor White}
+	Write-Host "0. Close this menu" -ForegroundColor White
 	Write-Host ' '
 }
 function Restart-HikaruShell {	

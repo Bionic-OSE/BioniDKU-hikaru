@@ -12,8 +12,8 @@ function Show-NotifyBalloon {
 }
 
 Import-Module BitsTransfer
-Remove-Item -Path $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarinfo.ps1 -Force
-Start-BitsTransfer -Source "https://github.com/Bionic-OSE/BioniDKU-utils/releases/latest/download/Hikarinfo.ps1" -Destination $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarinfo.ps1
+Remove-Item -Path $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1 -Force
+Start-BitsTransfer -Source "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarinfo.ps1" -Destination $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
 
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
 $versionremote = $version
