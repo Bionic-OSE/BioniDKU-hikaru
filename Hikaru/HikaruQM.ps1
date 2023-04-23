@@ -1,6 +1,9 @@
 # BioniDKU Quick Menu (codenamed "HikaruQM") - (c) Bionic Butter
+
 $host.UI.RawUI.WindowTitle = "BioniDKU Quick Menu"
 $update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
+$ittt = "Uh oh..."
+$imsg = "If you are seeing this message, the OS might have been improperly shut down while Explorer was restarting and as a result, your desktop's bottom right corner will reveal the build string. Please contact your challenge host to resolve this issue, and until then, do not sign in (or you will regret what you may see)."
 
 function Show-Branding {
 	Clear-Host
@@ -14,18 +17,29 @@ function Show-Menu {
 		Write-Host " "
 	}
 	Write-Host "What do you want to do?" -ForegroundColor White
-	Write-Host "1. Restart Explorer shell" -ForegroundColor White
+	Write-Host "1. Launch Administrative Menu" -ForegroundColor White
+	Write-Host "2. Restart Explorer shell" -ForegroundColor White
 	Write-Host "0. Close this menu" -ForegroundColor White
 	Write-Host ' '
 }
-function Restart-HikaruShell {	
-	Write-Host "Now restarting Explorer..." -ForegroundColor White
+function Set-BootMessage($title, $message) {
+	Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name 'legalnoticecaption' -Value $title -Type String -Force
+	Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name 'legalnoticetext' -Value $message -Type String -Force
+}
+function Clear-BootMessage {
+	Remove-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name 'legalnoticecaption' -Force -ErrorAction SilentlyContinue
+	Remove-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name 'legalnoticetext' -Force -ErrorAction SilentlyContinue
+}
+function Restart-HikaruShell {
+	Write-Host "Now restarting Explorer..." -ForegroundColor White -n; Write-Host " DO NOT POWER OFF YOUR SYSTEM UNTIL THE MAIN MENU APPEARS!" -ForegroundColor White
 	$shhk = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon").Shell
 	taskkill /f /im explorer.exe
+	Set-BootMessage $ittt $imsg
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "Shell" -Value 'explorer.exe' -Type String
 	Start-Process $env:SYSTEMDRIVE\Windows\explorer.exe
 	Start-Sleep -Seconds 5
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon" -Name "Shell" -Value $shhk -Type String
+	Clear-BootMessage
 }
 function Confirm-RestartShell {
 	Show-Branding
@@ -46,7 +60,8 @@ while($menu -eq $true) {
 	Write-Host "Your selection: " -n; $unem = Read-Host
 	switch ($unem) {
 		{$unem -like "0"} {exit}
-		{$unem -like "1"} {
+		{$unem -like "1"} {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\HikaruAM.exe; exit}
+		{$unem -like "2"} {
 			$menu = Confirm-RestartShell
 		}
 		{$unem -like "9"} {

@@ -1,7 +1,7 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCyDJHuR4FY1OidzRRC+HmK1CLw4w9225+OMo18IaMo2c47J07eBLtw7407lZ58u2XQUkcgDbA==
+::fBw5plQjdCaDJH6N4H4SIRRaRSCpCSayD74d+v3Hx+OMo18UV+0xRKfS0bWcKeMc5AvtdplN
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
@@ -26,7 +26,7 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHHLMt+Z0w==
+::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHHLMt+Z0w==
 ::YB416Ek+ZW8=
 ::
 ::
@@ -69,4 +69,6 @@ goto StartupDone
 
 :StartupDone
 reg import %systemdrive%\Bionic\Hikaru\ShellHikaru.reg
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticetext
 exit
