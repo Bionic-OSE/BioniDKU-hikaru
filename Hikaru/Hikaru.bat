@@ -69,6 +69,6 @@ goto StartupDone
 
 :StartupDone
 reg import %systemdrive%\Bionic\Hikaru\ShellHikaru.reg
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticetext
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption /f
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticetext /f
 exit
