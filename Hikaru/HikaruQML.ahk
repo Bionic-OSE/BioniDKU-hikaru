@@ -3,8 +3,9 @@
 Menu, Tray, Tip, BioniDKU Quick Menu`n(Double-click or Ctrl+Shift+Alt+Q to open)
 Menu, Tray, NoStandard
 Menu, Tray, NoMainWindow
-Menu, Tray, Add, Open, HikaruQM
-Menu, Tray, Default, Open
+Menu, Tray, Add, Open Quick Menu, HikaruQM
+Menu, Tray, Add, Open Administrative Menu, HikaruAM
+Menu, Tray, Default, "Open Quick Menu"
 Menu, Tray, Click, 2
 
 ^!+q::

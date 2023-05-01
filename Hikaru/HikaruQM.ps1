@@ -3,7 +3,12 @@
 $host.UI.RawUI.WindowTitle = "BioniDKU Quick Menu"
 $update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
 $ittt = "Uh oh..."
-$imsg = "If you are seeing this message, the OS might have been improperly shut down while Explorer was restarting and as a result, your desktop's bottom right corner will reveal the build string. Please contact your challenge host to resolve this issue, and until then, do not sign in (or you will regret what you may see)."
+$imsgt = (Get-ItemProperty -Path "HKCU:\Control Panel\Desktop").PaintDesktopVersion
+if ($imsgt -eq 1) {
+	$imsg = "If you are seeing this message, the OS might have been improperly shut down or the Quick Menu window was closed while Explorer was restarting. As a result, your desktop's bottom right corner will reveal the build string. Please contact your challenge host to resolve this issue, and until then, do not sign in (or you will regret what you may see)."
+} else {
+	$imsg = "If you are seeing this message, the OS might have been improperly shut down, or the Quick Menu window was closed while Explorer was restarting. Your system may continue to load properly despite the issue, but it is recommended to contact your challenge host as soon as possible."
+}
 
 function Show-Branding {
 	Clear-Host
@@ -17,8 +22,7 @@ function Show-Menu {
 		Write-Host " "
 	}
 	Write-Host "What do you want to do?" -ForegroundColor White
-	Write-Host "1. Launch Administrative Menu" -ForegroundColor White
-	Write-Host "2. Restart Explorer shell" -ForegroundColor White
+	Write-Host "1. Restart Explorer shell" -ForegroundColor White
 	Write-Host "0. Close this menu" -ForegroundColor White
 	Write-Host ' '
 }
@@ -60,8 +64,7 @@ while($menu -eq $true) {
 	Write-Host "Your selection: " -n; $unem = Read-Host
 	switch ($unem) {
 		{$unem -like "0"} {exit}
-		{$unem -like "1"} {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\HikaruAM.exe; exit}
-		{$unem -like "2"} {
+		{$unem -like "1"} {
 			$menu = Confirm-RestartShell
 		}
 		{$unem -like "9"} {
