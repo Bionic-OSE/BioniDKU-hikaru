@@ -35,6 +35,7 @@ function Start-Hikarefreshing($hv) {
 			Write-Host -ForegroundColor White "Did the transfer fail?" -n; Write-Host " Retrying..."
 		}
 	}
+	if ($hv -ne 1) {& $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshed.ps1}
 	. $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "Version" -Value "22108.$version" -Force
 	Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1" -Force
