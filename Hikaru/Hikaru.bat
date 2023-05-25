@@ -1,7 +1,7 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCaDJH6N4H4SIRRaRSCpCSayD74d+v3Hx+OMo18UV+0xRKfS0bWcKeMc5AvtdplN
+::fBw5plQjdCKDJH6N4H4SIRRaRSCpCSayD74d+v3Hx+OMo18UV+0xRKfS0bWcKeMc5AvtdplN
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
@@ -14,8 +14,8 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJieEsaHWQ=
-::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbQs=
+::cxY6rQJ7JhzQF1fEqQJieEsaHkrScjva
+::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbiXqSOV8
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
@@ -42,6 +42,9 @@ rem --------------------------------------------
 rem Hikaru section
 :StartupBegin
 reg import %systemdrive%\Bionic\Hikaru\ShellDefault.reg
+reg add HKLM\System\Setup /v CmdLine /t REG_SZ /d "%systemdrive%\Bionic\Hikaru\Hikarepair.exe" /f
+reg add HKLM\System\Setup /v SystemSetupInProgress /t REG_DWORD /d 1 /f
+reg add HKLM\System\Setup /v SetupType /t REG_DWORD /d 2 /f
 start %windir%\Explorer.exe
 timeout /t 3 /nobreak
 for /f "tokens=3" %%a in ('reg query "HKCU\Software\Hikaru-chan" /v StartupSoundVariant  ^|findstr /ri "REG_DWORD"') do set "ssv=%%a"
@@ -69,6 +72,9 @@ goto StartupDone
 
 :StartupDone
 reg import %systemdrive%\Bionic\Hikaru\ShellHikaru.reg
+reg add HKLM\System\Setup /v CmdLine /t REG_SZ /d "oobe/windeploy" /f
+reg add HKLM\System\Setup /v SystemSetupInProgress /t REG_DWORD /d 0 /f
+reg add HKLM\System\Setup /v SetupType /t REG_DWORD /d 0 /f
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption /f
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticetext /f
 exit

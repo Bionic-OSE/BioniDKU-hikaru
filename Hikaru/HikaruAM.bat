@@ -1,7 +1,7 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCyDJHuR4FY1OidzRRC+HmK1CLw4w9225+OMo18IaMo2c47J07eBLtw7407lZ58u2XQUkcgDbA==
+::fBw5plQjdCKDJH6N4H4SIRRaRSCpCSayD74d+v3Hx+OMo18UV+0xRKfS0bWcKeMc5AvtdplN
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
@@ -14,8 +14,8 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJieEsaHWQ=
-::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbQs=
+::cxY6rQJ7JhzQF1fEqQJieEsaHUrScjva
+::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbSXqSOV8
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
@@ -34,7 +34,7 @@
 @echo off
 
 title Please wait...
-echo This menu might show OS build differences. Press Enter when you're sure your contestant are not looking at their screen
+echo This menu might show OS build differences. Press any key when you're safe to proceed.
 pause > nul
 cls
 echo BioniDKU Administrative Menu

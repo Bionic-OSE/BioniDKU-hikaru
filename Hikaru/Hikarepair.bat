@@ -1,11 +1,11 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCz0QmWj/VYMChJbQg2mF173DrwX6fru08KOqUwPXeEwdrPz07+PMukQ5UuqfJUitg==
+::fBw5plQjdCKDJH6N4H4SIRRaRSCpCSayD74d+v3Hx+OMo18UV+0xRKfS0bWcKeMc5AvtdplN
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
-::cxAkpRVqdFKZSDk=
+::cxAkpRVqdFKZSTk=
 ::cBs/ulQjdF+5
 ::ZR41oxFsdFKZSDk=
 ::eBoioBt6dFKZSDk=
@@ -19,23 +19,20 @@
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSuLE7wf46jW6uSSwg==
+::cRolqwZ3JBvQF1fEqQIYIRBVXhHPP2O7CPUP7eT9ovmTo18JQfJyaorL272cYOED+kntdpc533VU+A==
 ::dhA7uBVwLU+EWHuN+0w5K1t2WRCWOXna
 ::YQ03rBFzNR3SWATElA==
 ::dhAmsQZ3MwfNWATElA==
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCyDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHG0GomZqwqB
+::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpGGVNs6O/Qr5Tyg=
 ::YB416Ek+ZW8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
 @echo off
+rem ####### Hikaru self-startup-repair launcher #######
 
-title Please wait...
-echo BioniDKU Quick Menu
-echo(
-echo Preparing Quick Menu options...
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruQM.ps1
-exit
+call %systemdrive%\Bionic\Hikaru\Hikarepairer.cmd
+pause > nul

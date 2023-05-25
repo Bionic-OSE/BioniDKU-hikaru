@@ -22,4 +22,6 @@ $versionremote = $version
 if ($versionremote -ne $version) {
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 1 -Type DWord -Force
 	Show-NotifyBalloon
+} else {
+	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 0 -Type DWord -Force
 }
