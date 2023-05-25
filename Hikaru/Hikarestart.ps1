@@ -6,7 +6,7 @@ function Set-BootMessage {
 	Set-ItemProperty "HKLM:\SYSTEM\Setup" -Name SetupType -Value 2 -Type DWord -Force
 }
 function Clear-BootMessage {
-	Set-ItemProperty "HKLM:\SYSTEM\Setup" -Name CmdLine -Value "oobe\windeploy" -Type String -Force
+	Set-ItemProperty "HKLM:\SYSTEM\Setup" -Name CmdLine -Value "" -Type String -Force
 	Set-ItemProperty "HKLM:\SYSTEM\Setup" -Name SystemSetupInProgress -Value 0 -Type DWord -Force
 	Set-ItemProperty "HKLM:\SYSTEM\Setup" -Name SetupType -Value 0 -Type DWord -Force
 }

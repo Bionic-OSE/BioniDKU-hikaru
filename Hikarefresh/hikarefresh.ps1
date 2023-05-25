@@ -13,13 +13,16 @@ function Show-NotifyBalloon {
 
 Import-Module BitsTransfer
 Remove-Item -Path $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1 -Force
-Start-BitsTransfer -Source "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarinfo.ps1" -Destination $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1 -ErrorAction Stop
+Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarinfo.ps1" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic\Hikarefresh"
 
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
 $versionremote = $version
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1
 
-if ($versionremote -ne $version) {
+if ($versionremote -eq $null) {
+	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 0 -Type DWord -Force
+}
+elseif ($versionremote -ne $version) {
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 1 -Type DWord -Force
 	Show-NotifyBalloon
 } else {

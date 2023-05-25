@@ -35,7 +35,10 @@ function Start-Hikarefreshing($hv) {
 			Write-Host -ForegroundColor White "Did the transfer fail?" -n; Write-Host " Retrying..."
 		}
 	}
-	if ($hv -ne 1) {& $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshed.ps1}
+	if ($hv -ne 1) {
+		& $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshed.ps1
+		Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 0 -Type DWord -Force
+	}
 	. $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "Version" -Value "22108.$version" -Force
 	Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1" -Force
@@ -49,8 +52,9 @@ $minbaseremote = $minbase
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1
 Write-Host "Version: " -ForegroundColor White -n; Write-Host "$versionremote" -n; Write-Host " (You have: " -n; Write-Host "$version)"
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
-Write-Host "Package size: $size"
-Write-Host "Update information: $descr"
+Write-Host "Package size: " -ForegroundColor White -n; Write-Host "$size"
+Write-Host "Update information: " -ForegroundColor White -n; Write-Host "$descr"
+. $env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1
 
 Write-Host " "
 Write-Host "Select one of the following actions:" -ForegroundColor White

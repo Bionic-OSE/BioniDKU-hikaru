@@ -72,7 +72,7 @@ goto StartupDone
 
 :StartupDone
 reg import %systemdrive%\Bionic\Hikaru\ShellHikaru.reg
-reg add HKLM\System\Setup /v CmdLine /t REG_SZ /d "oobe/windeploy" /f
+reg add HKLM\System\Setup /v CmdLine /t REG_SZ /d "" /f
 reg add HKLM\System\Setup /v SystemSetupInProgress /t REG_DWORD /d 0 /f
 reg add HKLM\System\Setup /v SetupType /t REG_DWORD /d 0 /f
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v legalnoticecaption /f
