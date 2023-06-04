@@ -29,9 +29,8 @@ function Confirm-RestartShell {
 	Write-Host "This option will close all opening Explorer windows. Save your work, then hit 1 and Enter to restart, or hit anything `r`nand Enter to go back."
 	Write-Host ' '
 	Write-Host "Your answer: " -n; $back = Read-Host
-	if ($back -ne 1) {return $true}
-	
-	Show-Branding
-	Restart-HikaruShell
-	return $true
+	if ($back -eq 1) {
+		Show-Branding
+		Restart-HikaruShell
+	}
 }

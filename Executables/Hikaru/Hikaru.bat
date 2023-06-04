@@ -1,7 +1,7 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCKDJH6N4H4SIRRaRSCpCSayD74d+v3Hx+OMo18UV+0xRKfS0bWcKeMc5AvtdplN
+::fBw5plQjdCaDJH6N4H4SIRRaRSCpCSayD74d+v3HxumIrHE1Xek+aobY1brAKeMcig==
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
@@ -14,8 +14,8 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJieEsaHkrScjva
-::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbiXqSOV8
+::cxY6rQJ7JhzQF1fEqQJieEsaH0rScjva
+::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbyXqSOV8
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
@@ -47,7 +47,7 @@ reg add HKLM\System\Setup /v SystemSetupInProgress /t REG_DWORD /d 1 /f
 reg add HKLM\System\Setup /v SetupType /t REG_DWORD /d 2 /f
 start %windir%\Explorer.exe
 timeout /t 3 /nobreak
-for /f "tokens=3" %%a in ('reg query "HKCU\Software\Hikaru-chan" /v StartupSoundVariant  ^|findstr /ri "REG_DWORD"') do set "ssv=%%a"
+for /f "tokens=%HikaruToken%" %%a in ('reg query "HKCU\Software\Hikaru-chan" /v StartupSoundVariant  ^|findstr /ri "REG_DWORD"') do set "ssv=%%a"
 if %ssv%==0x1 goto StartupSoundDefault
 if %ssv%==0x2 goto StartupSoundOSSE
 if %ssv%==0x3 goto StartupSoundOSTE

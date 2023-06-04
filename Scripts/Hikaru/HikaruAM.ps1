@@ -54,6 +54,7 @@ function Switch-Lockdown {
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 0 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 0 -Type DWord
 		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Command Processor" -Name Autorun
+		[System.Environment]::SetEnvironmentVariable('HikaruToken','3', 'Machine')
 		gpupdate.exe
 		Copy-Item "$env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.exe" -Destination "$env:SYSTEMDRIVE\Windows\System32"
 		Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.cfg"
@@ -72,6 +73,7 @@ function Switch-Lockdown {
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Command Processor" -Name Autorun -Value "cls" -Type String
+		[System.Environment]::SetEnvironmentVariable('HikaruToken','4', 'Machine')
 		gpupdate.exe
 		taskkill /f /im ApplicationFrameHost.exe
 		takeown /f "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
