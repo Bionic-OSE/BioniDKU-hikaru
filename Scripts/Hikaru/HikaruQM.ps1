@@ -1,12 +1,13 @@
-# BioniDKU Quick Menu (codenamed "HikaruQM") - (c) Bionic Butter
+# BioniDKU/YuumeiDKU Quick Menu (codenamed "HikaruQM") - (c) Bionic Butter
 
-$host.UI.RawUI.WindowTitle = "BioniDKU Quick Menu"
+$prodname = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ProductName
 $update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
+$host.UI.RawUI.WindowTitle = "$prodname Quick Menu"
 . $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
 
 function Show-Branding {
 	Clear-Host
-	Write-Host "BioniDKU Quick Menu" -ForegroundColor Black -BackgroundColor White
+	Write-Host "$prodname Quick Menu" -ForegroundColor Black -BackgroundColor White
 	Write-Host ' '
 }
 function Show-Menu {

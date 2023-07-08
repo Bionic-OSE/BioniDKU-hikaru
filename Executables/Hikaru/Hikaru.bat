@@ -14,8 +14,8 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJieEsaH0rScjva
-::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbyXqSOV8
+::cxY6rQJ7JhzQF1fEqQJieEsaFErScjva
+::ZQ05rAF9IBncCkqN+0xwdVsGHFTMZCXqSOV8
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
@@ -51,6 +51,7 @@ for /f "tokens=%HikaruToken%" %%a in ('reg query "HKCU\Software\Hikaru-chan" /v 
 if %ssv%==0x1 goto StartupSoundDefault
 if %ssv%==0x2 goto StartupSoundOSSE
 if %ssv%==0x3 goto StartupSoundOSTE
+if %ssv%==0x4 goto StartupSoundYuumei
 goto StartupSoundNone
 
 :StartupSoundDefault
@@ -64,6 +65,10 @@ goto StartupDone
 :StartupSoundOSTE
 %systemdrive%\Bionic\Hikaru\FFPlay.exe -i %systemdrive%\Bionic\Hikaru\StartupSound3.mp3 -nodisp -hide_banner -autoexit 
 timeout /t 3 /nobreak
+goto StartupDone
+
+:StartupSoundYuumei
+%systemdrive%\Bionic\Hikaru\FFPlay.exe -i %systemdrive%\Bionic\Hikaru\StartupSound4.mp3 -nodisp -hide_banner -autoexit 
 goto StartupDone
 
 :StartupSoundNone

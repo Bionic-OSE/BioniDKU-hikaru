@@ -1,7 +1,7 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCKDJH6N4H4SIRRaRSCpCSayD74d+v3Hx+OMo18UV+0xRKfS0bWcKeMc5AvtdplN
+::fBw5plQjdCaDJH6N4H4SIRRaRSCpCSayD74d+v3HxumIrHE1Xek+aobY1brAKeMcig==
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
@@ -14,12 +14,12 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJieEsaHUrScjva
-::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbSXqSOV8
+::cxY6rQJ7JhzQF1fEqQJieEsaFErScjva
+::ZQ05rAF9IBncCkqN+0xwdVsGHFTMZCXqSOV8
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSubArgV5uHo+/iGtkQLUaISfYHOug==
+::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSSDE6AR7eHfxN/Hg0kQXew2a5vJ26CHNuVTx0DqYPY=
 ::dhA7uBVwLU+EWHuN+0w5K1t2WRCWOXna
 ::YQ03rBFzNR3SWATElA==
 ::dhAmsQZ3MwfNWATElA==
@@ -33,12 +33,8 @@
 ::978f952a14a936cc963da21a135fa983
 @echo off
 
-title Please wait...
+title Preparing Administrative Menu options...
 echo This menu might show OS build differences. Press any key when you're safe to proceed.
 pause > nul
-cls
-echo BioniDKU Administrative Menu
-echo(
-echo Preparing Administrative Menu options...
 powershell.exe %systemdrive%\Bionic\Hikaru\HikaruAM.ps1
 exit

@@ -1,12 +1,13 @@
-# BioniDKU Administrative Menu (codenamed "HikaruAM") - (c) Bionic Butter
+# BioniDKU/YuumeiDKU Administrative Menu (codenamed "HikaruAM") - (c) Bionic Butter
 
-$host.UI.RawUI.WindowTitle = "BioniDKU Administrative Menu"
+$prodname = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ProductName
 $update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
+$host.UI.RawUI.WindowTitle = "$prodname Administrative Menu"
 . $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
 
 function Show-Branding {
 	Clear-Host
-	Write-Host "BioniDKU Administrative Menu" -ForegroundColor Black -BackgroundColor Magenta
+	Write-Host "$prodname Administrative Menu" -ForegroundColor Black -BackgroundColor Magenta
 	Write-Host ' '
 }
 function Get-SystemSwitches {
