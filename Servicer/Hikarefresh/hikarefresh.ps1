@@ -1,21 +1,25 @@
 # Hikaru-chan background update checker - (c) Bionic Butter
 
-$prodname = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ProductName
-function Show-NotifyBalloon {
+function Show-NotifyBalloon($status) {
+	switch ($status) {
+		0 {$title = 'No updates are available'; $text = 'Have a good day!'}
+		1 {$title = 'BioniDKU Menus System Update available'; $text = 'For more information, please open Quick Menu/Administrative Menu and select 9'}
+	}
 	[system.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms') | Out-Null
 	$Global:Balloon = New-Object System.Windows.Forms.NotifyIcon
 	$Balloon.Icon = [System.Drawing.Icon]::ExtractAssociatedIcon("$env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefresh.exe")
 	$Balloon.BalloonTipIcon = 'Info'
-	$Balloon.BalloonTipText = 'For more information, please open Quick Menu/Administrative Menu and select 9'
-	$Balloon.BalloonTipTitle = '$prodname Quick Menu Update available'
+	$Balloon.BalloonTipText = $text
+	$Balloon.BalloonTipTitle = $title
 	$Balloon.Visible = $true
 	$Balloon.ShowBalloonTip(7000)
 }
 
-# Update the servicing compoments first
-
+$launchedfromxm = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateCheckerLaunchedFrom
 Remove-Item -Path $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshinfo.ps1 -Force
-Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarefreshinfo.ps1" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic\Hikarefresh"
+Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarefreshinfo.ps1 -O Hikarefreshinfo.ps1" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic\Hikarefresh"
+
+# Update the serivcer first
 
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshinfo.ps1
 $serviceremote = $servicer
@@ -23,6 +27,7 @@ $serviceremote = $servicer
 
 if ($serviceremote -eq $null) {exit}
 elseif ($serviceremote -ne $servicer) {
+	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z.old") -eq $true) {Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z.old" -Force}
 	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z") -eq $true) {Rename-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z" -NewName Hikarup.7z.old}
 	Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarup.7z" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic"
 		if (Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z" -PathType Leaf) {
@@ -43,10 +48,24 @@ $versionremote = $version
 
 if ($versionremote -eq $null) {
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 0 -Type DWord -Force
+	if (@("QM","AM").Contains($launchedfromxm)) {
+		Show-NotifyBalloon 0
+		Remove-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateCheckerLaunchedFrom"
+		Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\Hikaru${launchedfromxm}.exe"
+	}
 }
 elseif ($versionremote -ne $version) {
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 1 -Type DWord -Force
-	Show-NotifyBalloon
+	Show-NotifyBalloon 1
 } else {
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 0 -Type DWord -Force
+	if (@("QM","AM").Contains($launchedfromxm)) {
+		Show-NotifyBalloon 0
+		Remove-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateCheckerLaunchedFrom"
+		Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\Hikaru${launchedfromxm}.exe"
+	}
 }
+
+Remove-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateCheckerLaunchedFrom"
+Start-Sleep -Seconds 7
+$Balloon.Visible = $false
