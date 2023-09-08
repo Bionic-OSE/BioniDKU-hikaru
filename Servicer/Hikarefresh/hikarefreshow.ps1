@@ -60,7 +60,7 @@ Write-Host " "
 Write-Host "Select one of the following actions:" -ForegroundColor White
 Write-Host "1. Accept update" -ForegroundColor White
 Write-Host "0. Cancel and close this window" -ForegroundColor White
-Write-Host "Your selection: " -n; $act = Read-Host
+Write-Host "> " -n; $act = Read-Host
 switch ($act) {
 	{$act -like "0"} {exit}
 	{$act -like "1"} {

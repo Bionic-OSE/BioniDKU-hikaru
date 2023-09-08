@@ -57,6 +57,10 @@ if ($versionremote -eq $null) {
 elseif ($versionremote -ne $version) {
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 1 -Type DWord -Force
 	Show-NotifyBalloon 1
+	if (@("QM","AM").Contains($launchedfromxm)) {
+		Remove-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateCheckerLaunchedFrom"
+		Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\Hikaru${launchedfromxm}.exe"
+	}
 } else {
 	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 0 -Type DWord -Force
 	if (@("QM","AM").Contains($launchedfromxm)) {
