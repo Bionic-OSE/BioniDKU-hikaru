@@ -1,9 +1,9 @@
 # Hikaru-chan hard files updater - (c) Bionic Butter
 
-$host.UI.RawUI.WindowTitle = "BioniDKU Quick Menu Updater"
+$host.UI.RawUI.WindowTitle = "BioniDKU Menus System Updater"
 function Show-Branding {
 	Clear-Host
-	Write-Host "BioniDKU Quick Menu Updater" -ForegroundColor Black -BackgroundColor White
+	Write-Host "BioniDKU Menus System Updater" -ForegroundColor Black -BackgroundColor White
 	Write-Host ' '
 }
 

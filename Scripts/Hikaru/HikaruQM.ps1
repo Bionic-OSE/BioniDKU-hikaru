@@ -53,14 +53,15 @@ function Set-TaskbarLocation {
 	Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -Value $Settings
 	
 	Restart-HikaruShell -NoStop -NoSpin
+	Stop-Process $SuwakoSpinner.Id
 }
 function Input-TaskbarLocation {
 	while ($true) {
 		Show-Branding
-		Write-Host "Move your taskbar without disabling lockdown using this option. The Explorer shell will be (gracefully) restarted for `r`nchanges to take effect.`r`n" -ForegroundColor White
+		Write-Host "Move your taskbar without disabling lockdown using this option. The Explorer shell will be restarted for changes `r`nto take effect, which will close all of its windows.`r`n" -ForegroundColor White
 		Write-Host " Select a taskbar location"
-		Write-Host " 1. Top" -ForegroundColor White -n; Write-Host " (OSTE default)"
-		Write-Host " 2. Bottom" -ForegroundColor White
+		Write-Host " 1. Top" -ForegroundColor White
+		Write-Host " 2. Bottom" -ForegroundColor White -n; Write-Host " (Windows default)"
 		Write-Host " 3. Left" -ForegroundColor White
 		Write-Host " 4. Right`r`n" -ForegroundColor White
 		Write-Host " 0. Cancel`r`n" -ForegroundColor White
@@ -68,7 +69,7 @@ function Input-TaskbarLocation {
 		$tskbv = "1","2","3","4"
 		if ($tskbl -like "0") {break}
 		if (-not [string]::IsNullOrWhiteSpace($tskbl) -and $tskbv.Contains($tskbl)) {
-			Write-Host "Are sure you want to do this? (1): " -ForegroundColor White -n; $bruu = Read-Host
+			Write-Host "Confirm changing taskbar location? (1): " -ForegroundColor White -n; $bruu = Read-Host
 			if ($bruu -like "1") {Set-TaskbarLocation -Location $tskbl}
 		}
 	}

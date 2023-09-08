@@ -26,7 +26,7 @@ function Show-IPrompt($maxvars) {
 			$inpcnv = [System.Int32]::TryParse($inp,[ref]$inpint)
 			switch ($true) {
 				{$inpint.GetType().Name -like "Int32" -and $inpvld.Contains($inpint)} {
-					Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "StartupSoundVariant" -Value $value -Type DWord -Force
+					Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "StartupSoundVariant" -Value $inpint -Type DWord -Force
 				}
 				{$az.Contains([char]$inp)} {
 					$inpidx = $az.IndexOf([char]$inp)+1
