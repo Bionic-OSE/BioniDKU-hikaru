@@ -1,4 +1,4 @@
-# Hikaru-chan for BioniDKU OSTE - (c) Bionic Butter
+# Hikaru-chan 3.0 - (c) Bionic Butter
 
 . $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
 $ssv = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").StartupSoundVariant
