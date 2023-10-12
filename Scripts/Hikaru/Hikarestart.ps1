@@ -22,6 +22,7 @@ function Restart-HikaruShell {
 	if (-not $NoSpin) {Start-ShellSpinner}
 	if (-not $NoStop) {Write-Host "Now restarting Explorer..." -ForegroundColor White; Exit-HikaruShell $Method}
 	
+	Start-ScheduledTask -TaskName 'BioniDKU Windows Build String Modifier'
 	$eid = Start-Process $env:SYSTEMROOT\explorer.exe -PassThru
 	Start-Sleep -Seconds 2
 	Set-ItemProperty "HKCU:\Software\Hikaru-chan" -Name ShellID -Value $eid.Id -Type String -Force

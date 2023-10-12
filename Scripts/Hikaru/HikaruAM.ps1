@@ -45,6 +45,17 @@ function Show-Menu {
 	Write-Host " Others"
 	Write-Host " ${updateopt}0. Close this menu`r`n" -ForegroundColor White
 }
+function Switch-ShellState($action) {
+	gpupdate.exe
+	$action | Out-File -FilePath $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationControlAction.txt
+	Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'
+	if ($action -eq 1) {$actchk = $true} else {$actchk = $false}; $acting = $true
+	while ($acting) {
+		$actvrf = Test-Path -Path "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
+		if ($actvrf -eq $actchk) {$acting = $false}
+	}
+	Restart-HikaruShell
+}
 function Switch-Lockdown {
 	Show-Branding
 	$lock = Get-SystemSwitches
@@ -54,18 +65,15 @@ function Switch-Lockdown {
 		Write-Host "Proceeding will also restart Explorer, which closes all opening Explorer windows.`r`n"
 		Write-Host "> " -n; $back = Read-Host
 		if ($back -ne 1) {return}
-		
+
 		Show-Branding
 		Write-Host "Disabling Lockdown and applying changes..." -ForegroundColor White
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name DisallowRun -Value 0 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 0 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 0 -Type DWord
 		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Command Processor" -Name Autorun
-		[System.Environment]::SetEnvironmentVariable('HikaruToken','3', 'Machine')
-		gpupdate.exe
-		Copy-Item "$env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.exe" -Destination "$env:SYSTEMDRIVE\Windows\System32"
+		Switch-ShellState 1
 		Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.cfg"
-		Restart-HikaruShell
 	} else {
 		Write-Host "Reenable Lockdown? Hit 1 and Enter to enable, or hit anything and Enter to go back."
 		Write-Host "Proceeding will also restart Explorer, which closes all opening Explorer windows.`r`n"
@@ -78,13 +86,7 @@ function Switch-Lockdown {
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Command Processor" -Name Autorun -Value "cls" -Type String
-		[System.Environment]::SetEnvironmentVariable('HikaruToken','4', 'Machine')
-		gpupdate.exe
-		taskkill /f /im ApplicationFrameHost.exe
-		takeown /f "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
-		icacls "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe" /grant Administrators:F
-		Remove-Item "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
-		Restart-HikaruShell
+		Switch-ShellState 2
 	}
 }
 function Start-CommandPrompt {
