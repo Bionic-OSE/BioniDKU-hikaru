@@ -52,7 +52,7 @@ function Switch-ShellState($action) {
 	if ($action -eq 1) {$actchk = $true} else {$actchk = $false}; $acting = $true
 	while ($acting) {
 		$actvrf = Test-Path -Path "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
-		if ($actvrf -eq $actchk) {$acting = $false}
+		if ($actvrf -eq $actchk) {$acting = $false} else {Start-Sleep -Seconds 1; Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'}
 	}
 	Restart-HikaruShell
 }

@@ -23,15 +23,24 @@ function Restart-HikaruShell {
 	if (-not $NoStop) {Write-Host "Now restarting Explorer..." -ForegroundColor White; Exit-HikaruShell $Method}
 	
 	Start-ScheduledTask -TaskName 'BioniDKU Windows Build String Modifier'
+	$build = [System.Environment]::OSVersion.Version | Select-Object -ExpandProperty "Build"
+	if ($build -le 10586) {$hkrbuildkey = "CurrentBuildNumber"} else {$hkrbuildkey = "BuildLab"}
+	while ($true) {
+		$hkrbchkvar = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").$hkrbuildkey
+		if ($hkrbchkvar -eq "?????.????_release.??????-????") {break}
+	}
 	$eid = Start-Process $env:SYSTEMROOT\explorer.exe -PassThru
 	Start-Sleep -Seconds 2
 	Set-ItemProperty "HKCU:\Software\Hikaru-chan" -Name ShellID -Value $eid.Id -Type String -Force
 }
 function Confirm-RestartShell {
 	Show-Branding
-	Write-Host "The Windows Explorer shell on a $prodname system works a bit differently, and thus restarting by normal means `r`nwill result in an Explorer window opening instead of the shell restarting. Use this option to restart the shell `r`nproperly."
-	Write-Host "This option will close all opening Explorer windows. Save your work, then hit 1 and Enter to restart, or hit anything `r`nand Enter to go back." -ForegroundColor White
-	Write-Host ' '
+	Write-Host "The Windows Explorer shell on a $prodname system works a bit differently. Use this option to restart the shell properly."
+	Write-Host " - To gracefully restart the shell, hit 1 and Enter. This will not close your Explorer windows." -ForegroundColor White
+	Write-Host " - To forcefully restart the shell, hit 8 and Enter. This, again, won't close your windows." -ForegroundColor White
+	Write-Host " - To forcefully restart Explorer as a whole, hit 9 and Enter. This WILL CLOSE all Explorer windows." -ForegroundColor White
+	Write-Host " - To go back to the main menu, hit anything else and Enter." -ForegroundColor White
+	Write-Host "Forcefully restarting may cause your desktop layout to reset. Please be careful.`r`n"
 	Write-Host "> " -n; $back = Read-Host
 	
 	switch ($back) {

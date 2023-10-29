@@ -19,14 +19,14 @@
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSSDE6AR7eHfxN/Hk1gUV+l/VYrVz9Q=
+::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSSDE6AR7eHfxN/HkUwbUaISd4vempmLLvVz
 ::dhA7uBVwLU+EWHuN+0w5K1t2WRCWOXna
 ::YQ03rBFzNR3SWATElA==
 ::dhAmsQZ3MwfNWATElA==
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHG0GomZqwqB
+::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHG2GomZqwqB
 ::YB416Ek+ZG8=
 ::
 ::
@@ -34,5 +34,5 @@
 @echo off
 
 title Windows PowerShell
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruQM.ps1
-exit
+powershell.exe %systemdrive%\Bionic\Hikaru\HikaruSM.ps1
+pause
