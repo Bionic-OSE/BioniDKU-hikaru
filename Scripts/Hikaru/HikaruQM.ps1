@@ -39,8 +39,8 @@ function Set-TaskbarLocation {
 	
 	Write-Host "Changing taskbar location" -ForegroundColor White
 	
-	Start-ShellSpinner
-	Exit-HikaruShell
+	if (-not (Check-SafeMode)) {Start-ShellSpinner}
+	Exit-HikaruShell -Method 0
 	$bit = 0;
 	switch ($Location) {
 		"3" { $bit = 0x00 }
@@ -53,7 +53,6 @@ function Set-TaskbarLocation {
 	Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\StuckRects3 -Name Settings -Value $Settings
 	
 	Restart-HikaruShell -NoStop -NoSpin
-	Stop-Process $SuwakoSpinner.Id
 }
 function Input-TaskbarLocation {
 	while ($true) {
@@ -69,7 +68,7 @@ function Input-TaskbarLocation {
 		$tskbv = "1","2","3","4"
 		if ($tskbl -like "0") {break}
 		if (-not [string]::IsNullOrWhiteSpace($tskbl) -and $tskbv.Contains($tskbl)) {
-			Write-Host "Confirm changing taskbar location? (1): " -ForegroundColor White -n; $bruu = Read-Host
+			Write-Host "`r`nConfirm changing taskbar location? (1): " -ForegroundColor White -n; $bruu = Read-Host
 			if ($bruu -like "1") {Set-TaskbarLocation -Location $tskbl}
 		}
 	}
@@ -92,7 +91,7 @@ while ($true) {
 		{$_ -like "3"} {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1}
 		{$_ -like "4"} {Start-RunDllCpl "shell32.dll,Control_RunDLL TimeDate.cpl,,0"}
 		{$_ -like "5"} {Start-RunDllCpl "shell32.dll,Control_RunDLL PowerCfg.cpl @0,/editplan:381b4222-f694-41f0-9685-ff5bb260df2e"}
-		{$_ -like "9"} {
+		{$_ -like "("} { # Hikaru beta, correct it back in Final please
 			if ($update -eq 1) {
 				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshow.exe
 				exit

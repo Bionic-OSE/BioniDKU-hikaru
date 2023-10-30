@@ -4,7 +4,7 @@ $prodname = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ProductName
 $update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
 . $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
 
-Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe" -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\HikaruQMBeep.mp3 -nodisp -hide_banner -autoexit -loglevel quiet"
+Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe" -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\HikaruAMBeep.mp3 -nodisp -hide_banner -autoexit -loglevel quiet"
 
 function Show-Branding {
 	$host.UI.RawUI.WindowTitle = "$prodname Administrative Menu"

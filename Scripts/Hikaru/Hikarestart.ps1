@@ -1,7 +1,15 @@
 # BioniDKU Quick/Administrative Menu Explorer restarting functions hive
 
+function Check-SafeMode {
+	$sm = (gwmi win32_computersystem -Property BootupState).BootupState
+	switch ($sm) {
+		"Normal boot" {return $false}
+		{$_ -like "Fail-safe*"} {return $true}
+	}
+}
 function Start-ShellSpinner {
-	$global:SuwakoSpinner = Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\ShellSpinner.mp4 -fs -alwaysontop -noborder -autoexit" -PassThru
+	$n = Get-Random -Minimum 1 -Maximum 6
+	$global:SuwakoSpinner = Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\ShellSpinner$n.mp4 -fs -alwaysontop -noborder -autoexit" -PassThru
 	Start-Sleep -Seconds 1
 }
 function Exit-HikaruShell($type) {
@@ -19,10 +27,13 @@ function Restart-HikaruShell {
 		[switch]$NoStop,
 		[switch]$NoSpin
 	)
-	if (-not $NoSpin) {Start-ShellSpinner}
-	if (-not $NoStop) {Write-Host "Now restarting Explorer..." -ForegroundColor White; Exit-HikaruShell $Method}
+	if (-not $NoSpin -and -not (Check-SafeMode)) {Start-ShellSpinner}
+	if (-not $NoStop) {
+		Write-Host "Now restarting Explorer..." -ForegroundColor White; Exit-HikaruShell $Method
+	} else {
+		if (Check-SafeMode) {Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\HikaruBuildMod.exe"} else {Start-ScheduledTask -TaskName 'BioniDKU Windows Build String Modifier'}
+	}
 	
-	Start-ScheduledTask -TaskName 'BioniDKU Windows Build String Modifier'
 	$build = [System.Environment]::OSVersion.Version | Select-Object -ExpandProperty "Build"
 	if ($build -le 10586) {$hkrbuildkey = "CurrentBuildNumber"} else {$hkrbuildkey = "BuildLab"}
 	while ($true) {

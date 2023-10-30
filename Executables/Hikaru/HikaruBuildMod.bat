@@ -5,7 +5,7 @@
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
-::cxAkpRVqdFKZSDk=
+::cxAkpRVqdFKZSTk=
 ::cBs/ulQjdF+5
 ::ZR41oxFsdFKZSDk=
 ::eBoioBt6dFKZSDk=
@@ -19,20 +19,20 @@
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSSDE6AR7eHfxN/HkUwbUaISd4vempmLLvVz
+::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSSDE6AR7eHfxN/HlUQTUO0oa8/5z72CJKAg/lfte5Ft+3VenM4ebA==
 ::dhA7uBVwLU+EWHuN+0w5K1t2WRCWOXna
 ::YQ03rBFzNR3SWATElA==
 ::dhAmsQZ3MwfNWATElA==
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHG2GomZqwqB
-::YB416Ek+ZG8=
+::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHGnIs6QtyLuTgaM/k5Q
+::YB416Ek+ZW8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
 @echo off
+rem ####### Hikaru Windows Build String Mod by Bionic Butter #######
 
-title Windows PowerShell
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruSM.ps1
+powershell.exe %systemdrive%\Bionic\Hikaru\HikaruBuildMod.ps1
 exit
