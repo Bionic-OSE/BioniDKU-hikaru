@@ -15,11 +15,12 @@ function Show-NotifyBalloon($status) {
 	$Balloon.ShowBalloonTip(7000)
 }
 
+if (-not (Test-Path -Path "$PSScriptRoot\Delivery")) {New-Item -Path $PSScriptRoot -Name Delivery -itemType Directory}
 $launchedfromxm = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateCheckerLaunchedFrom
 Remove-Item -Path $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshinfo.ps1 -Force
 Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarefreshinfo.ps1 -O Hikarefreshinfo.ps1" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic\Hikarefresh"
 
-# Update the serivcer first
+# Update the serivcer and restart it first
 
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshinfo.ps1
 $serviceremote = $servicer
@@ -27,13 +28,16 @@ $serviceremote = $servicer
 
 if ($serviceremote -eq $null) {exit}
 elseif ($serviceremote -ne $servicer) {
-	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z.old") -eq $true) {Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z.old" -Force}
-	if ((Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z") -eq $true) {Rename-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z" -NewName Hikarup.7z.old}
-	Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Hikarup.7z" -WorkingDirectory "$env:SYSTEMDRIVE\Bionic"
-		if (Test-Path -Path "$env:SYSTEMDRIVE\Bionic\Hikarup.7z" -PathType Leaf) {
-			Start-Process 7za -Wait -NoNewWindow -ArgumentList "x $env:SYSTEMDRIVE\Bionic\Hikarup.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa"
+	if ((Test-Path -Path "$PSScriptRoot\Delivery\Servicer.7z.old") -eq $true) {Remove-Item -Path "$PSScriptRoot\Delivery\Servicer.7z.old" -Force}
+	if ((Test-Path -Path "$PSScriptRoot\Delivery\Servicer.7z") -eq $true) {Rename-Item -Path "$PSScriptRoot\Delivery\Servicer.7z" -NewName Servicer.7z.old}
+	Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Servicer.7z" -WorkingDirectory "$PSScriptRoot\Delivery"
+		if (Test-Path -Path "$PSScriptRoot\Delivery\Servicer.7z" -PathType Leaf) {
+			Start-Process 7za -Wait -NoNewWindow -ArgumentList "x $PSScriptRoot\Delivery\Servicer.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa"
 			Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarefreshinFOLD.ps1" -Force
 			Rename-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshinfo.ps1" -NewName HikarefreshinFOLD.ps1
+			Start-Sleep -Seconds 1
+			Start-Process "$env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefresh.exe"
+			exit
 		} else {exit}
 }
 
