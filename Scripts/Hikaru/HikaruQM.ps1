@@ -1,8 +1,8 @@
 # BioniDKU Quick Menu (codenamed "HikaruQM") - (c) Bionic Butter
 
+. $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
 $prodname = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ProductName
 $update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
-. $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
 
 Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe" -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\HikaruQMBeep.mp3 -nodisp -hide_banner -autoexit -loglevel quiet"
 
@@ -22,10 +22,11 @@ function Show-Menu {
 	Write-Host " Shell tasks"
 	Write-Host " 1. Restart Explorer shell" -ForegroundColor White
 	Write-Host " 2. Change taskbar location" -ForegroundColor White
-	Write-Host " 3. Change sign-in sound`r`n" -ForegroundColor White
+	Write-Host " 3. Change sign-in sound" -ForegroundColor White
+	Write-Host " 4. Change system sounds`r`n" -ForegroundColor White
 	Write-Host " Configure your device"
-	Write-Host " 4. Adjust time settings" -ForegroundColor White
-	Write-Host " 5. Adjust power settings`r`n" -ForegroundColor White
+	Write-Host " 5. Adjust time settings" -ForegroundColor White
+	Write-Host " 6. Adjust power settings`r`n" -ForegroundColor White
 	Write-Host " Others"
 	Write-Host " ${updateopt}0. Close this menu`r`n" -ForegroundColor White
 }
@@ -88,9 +89,10 @@ while ($true) {
 		{$_ -like "0"} {exit}
 		{$_ -like "1"} {Confirm-RestartShell}
 		{$_ -like "2"} {Input-TaskbarLocation}
-		{$_ -like "3"} {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1}
-		{$_ -like "4"} {Start-RunDllCpl "shell32.dll,Control_RunDLL TimeDate.cpl,,0"}
-		{$_ -like "5"} {Start-RunDllCpl "shell32.dll,Control_RunDLL PowerCfg.cpl @0,/editplan:381b4222-f694-41f0-9685-ff5bb260df2e"}
+		{$_ -like "3"} {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1 1}
+		{$_ -like "4"} {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1 2}
+		{$_ -like "5"} {Start-RunDllCpl "shell32.dll,Control_RunDLL TimeDate.cpl,,0"}
+		{$_ -like "6"} {Start-RunDllCpl "shell32.dll,Control_RunDLL PowerCfg.cpl @0,/editplan:381b4222-f694-41f0-9685-ff5bb260df2e"}
 		{$_ -like "("} { # Hikaru beta, correct it back in Final please
 			if ($update -eq 1) {
 				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshow.exe

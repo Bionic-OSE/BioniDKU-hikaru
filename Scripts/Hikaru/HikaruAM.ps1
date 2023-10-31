@@ -1,8 +1,9 @@
 # BioniDKU Administrative Menu (codenamed "HikaruAM") - (c) Bionic Butter
 
+. $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
 $prodname = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ProductName
 $update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
-. $env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestart.ps1
+$global:staticspinner = $false
 
 Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe" -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\HikaruAMBeep.mp3 -nodisp -hide_banner -autoexit -loglevel quiet"
 
@@ -11,6 +12,28 @@ function Show-Branding {
 	Clear-Host
 	Write-Host "$prodname Administrative Menu" -ForegroundColor Black -BackgroundColor Magenta
 	Write-Host ' '
+}
+function Show-Menu {
+	Show-Branding
+	if ($update -eq 1) {
+		$updateopt = "9. View update`r`n "
+		Write-Host "An update is available, select option 9 for more information`r`n" -ForegroundColor White
+	} else {$updateopt = "9. Check for updates`r`n "}
+	Write-Host "Becareful with what you are doing!`r`n" -ForegroundColor Magenta
+	$lock, $lockclr = Get-SystemSwitches
+	Write-Host " Shell tasks"
+	Write-Host " 1. Restart Explorer shell" -ForegroundColor White
+	switch ($true) {
+		{Check-SafeMode} {Write-Host " 2. Shell restart animation is supressed in Safe Mode*`r`n" -ForegroundColor DarkGray}
+		$staticspinner {Write-Host " 2. Shell restart animation is supressed, reopen AM to reenable*`r`n" -ForegroundColor DarkGray}
+		default {Write-Host " 2. Supress shell restart animation*`r`n" -ForegroundColor White}
+	}
+	Write-Host " System tasks"
+	Write-Host " 3. Enable/Disable Lockdown (currently " -ForegroundColor White -n; Write-Host "$lock" -ForegroundColor $lockclr -n; Write-Host ")"
+	Write-Host " 4. Open a Command Prompt window" -ForegroundColor White
+	if ($lock -eq "DISABLED") {Write-Host " 5. Configure list of blocked applications`r`n" -ForegroundColor White} else {Write-Host "`r"}
+	Write-Host " Others"
+	Write-Host " ${updateopt}0. Close this menu`r`n" -ForegroundColor White
 }
 function Get-SystemSwitches {
 	$nr = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer").DisallowRun
@@ -27,23 +50,6 @@ function Get-SystemSwitches {
 		$nclr = 'Yellow'
 	}
 	return $nall, $nclr
-}
-function Show-Menu {
-	Show-Branding
-	if ($update -eq 1) {
-		$updateopt = "9. View update`r`n "
-		Write-Host "An update is available, select option 9 for more information`r`n" -ForegroundColor White
-	} else {$updateopt = "9. Check for updates`r`n "}
-	Write-Host "Becareful with what you are doing!`r`n" -ForegroundColor Magenta
-	$lock, $lockclr = Get-SystemSwitches
-	Write-Host " Shell tasks"
-	Write-Host " 1. Restart Explorer shell`r`n" -ForegroundColor White
-	Write-Host " System tasks"
-	Write-Host " 2. Enable/Disable Lockdown (currently " -ForegroundColor White -n; Write-Host "$lock" -ForegroundColor $lockclr -n; Write-Host ")"
-	Write-Host " 3. Open a Command Prompt window" -ForegroundColor White
-	if ($lock -eq "DISABLED") {Write-Host " 4. Configure list of blocked applications`r`n" -ForegroundColor White} else {Write-Host "`r"}
-	Write-Host " Others"
-	Write-Host " ${updateopt}0. Close this menu`r`n" -ForegroundColor White
 }
 function Switch-ShellState($action) {
 	gpupdate.exe
@@ -92,22 +98,43 @@ function Switch-Lockdown {
 function Start-CommandPrompt {
 	Show-Branding
 	$lock = Get-SystemSwitches
+	$isuacon = (Get-ItemProperty 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System').EnableLUA
 	Write-Host "Use this option to quickly reach the Command Prompt without having to search though Start folders."
 	if ($lock -eq 'ENABLED') {
-		Write-Host "Hit 1 and Enter to open, or hit anything and Enter to go back."
+		$syscmd = "/commandline `"/k cls`""
 	} else {
-		Write-Host "The build number will be " -n; Write-Host "IMMEDIATELY SHOWN" -ForegroundColor White -n; Write-Host " upon launching this program. It is then " -n; Write-Host "YOUR RESPONSIBILTY to keep the secrets!" -ForegroundColor White; Write-Host "If you can securely proceed, hit 1 and Enter to open, or hit anything and Enter to go back."
+		Write-Host "The build number will be " -n; Write-Host "IMMEDIATELY SHOWN" -ForegroundColor Yellow -n; Write-Host " upon launching this program. It is then " -n; Write-Host "YOUR RESPONSIBILTY`r`n to keep the secrets!" -ForegroundColor Yellow -n; Write-Host " If you can securely proceed:" -ForegroundColor White
+		$syscmd = $null
 	}
+	if ($isuacon -eq 1) {
+		Write-Host " - Hit 1 and Enter to open a normal Command Prompt." -ForegroundColor White
+		Write-Host " - Hit 2 and Enter to open an elevated Command Prompt." -ForegroundColor White
+	} else {
+		Write-Host " - Hit 1 and Enter to open a normal Command Prompt." -ForegroundColor White
+	}
+	Write-Host " - Hit 3 and Enter to open Command Prompt as SYSTEM." -ForegroundColor White
+	Write-Host " - Hit anything else and Enter to go back." -ForegroundColor White
 	Write-Host ' '
 	Write-Host "> " -n; $back = Read-Host
-	if ($back -ne 1) {return}
-	
-	Start-Process $env:SYSTEMDRIVE\Windows\System32\cmd.exe
+	switch ($back) {
+		1 {Start-Process $env:SYSTEMDRIVE\Windows\System32\cmd.exe}
+		2 {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename %SystemDrive%\Windows\System32\cmd.exe /runas 3"}
+		3 {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename %SystemDrive%\Windows\System32\cmd.exe $syscmd /runas 4"}
+		4 {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename %SystemDrive%\Windows\System32\cmd.exe $syscmd /runas 8"}
+		default {return}
+	}
 }
 function Start-EditLockedApps {
 	Show-Branding
 	Start-Process notepad.exe -Wait -ArgumentList "$env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestrict.reg"
 	reg import "$env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestrict.reg"
+}
+function Show-StaticSpinnerInfo {
+	Show-Branding
+	Write-Host "This will temporarily simplify the shell restart animation for this Administrative Menu instance, which can be helpful `r`nif the full animation is slowing down your weak remote connection."
+	Write-Host "This will not apply to other opening AM windows unless if you toggle this same option on each of them, and will have no effect on the Quick Menu (except in Safe Mode)."
+	Write-Host "In Safe Mode, this option is always enabled for both menus.`r`n"
+	Write-Host "Press Enter to go back." -ForegroundColor White; Read-Host
 }
 
 while($true) {
@@ -116,13 +143,15 @@ while($true) {
 	switch ($unem) {
 		{$_ -like "0"} {exit}
 		{$_ -like "1"} {Confirm-RestartShell}
-		{$_ -like "2"} {Switch-Lockdown}
-		{$_ -like "3"} {Start-CommandPrompt}
-		{$_ -like "4"} {
+		{$_ -like "2"} {if (-not (Check-SafeMode)) {$global:staticspinner = $true}}
+		{$_ -like "3"} {Switch-Lockdown}
+		{$_ -like "4"} {Start-CommandPrompt}
+		{$_ -like "5"} {
 			$lock = Get-SystemSwitches
 			if ($lock -eq "DISABLED") {Start-EditLockedApps}
 		}
-		{$_ -like "9"} {
+		{$_ -eq "*"} {Show-StaticSpinnerInfo}
+		{$_ -like "("} { # Hikaru beta, correct it back in Final please
 			if ($update -eq 1) {
 				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshow.exe
 				exit

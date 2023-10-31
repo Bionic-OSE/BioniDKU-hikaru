@@ -8,7 +8,7 @@ function Check-SafeMode {
 	}
 }
 function Start-ShellSpinner {
-	$n = Get-Random -Minimum 1 -Maximum 6
+	if ((Check-SafeMode) -or $staticspinner) {$n = "S"} else {$n = Get-Random -Minimum 1 -Maximum 6}
 	$global:SuwakoSpinner = Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\ShellSpinner$n.mp4 -fs -alwaysontop -noborder -autoexit" -PassThru
 	Start-Sleep -Seconds 1
 }
@@ -27,7 +27,7 @@ function Restart-HikaruShell {
 		[switch]$NoStop,
 		[switch]$NoSpin
 	)
-	if (-not $NoSpin -and -not (Check-SafeMode)) {Start-ShellSpinner}
+	if (-not $NoSpin) {Start-ShellSpinner}
 	if (-not $NoStop) {
 		Write-Host "Now restarting Explorer..." -ForegroundColor White; Exit-HikaruShell $Method
 	} else {
