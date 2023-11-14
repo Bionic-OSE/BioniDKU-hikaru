@@ -1,5 +1,7 @@
 # BioniDKU Quick/Administrative Menu Explorer restarting functions hive
 
+$hikaru = "400_stable"
+
 function Check-SafeMode {
 	$sm = (gwmi win32_computersystem -Property BootupState).BootupState
 	switch ($sm) {
@@ -38,7 +40,8 @@ function Restart-HikaruShell {
 	if ($build -le 10586) {$hkrbuildkey = "CurrentBuildNumber"} else {$hkrbuildkey = "BuildLab"}
 	while ($true) {
 		$hkrbchkvar = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").$hkrbuildkey
-		if ($hkrbchkvar -eq "?????.????_release.??????-????") {break}
+		$hkrbuildose = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").BuildLabOSE
+		if ($hkrbchkvar -eq $hkrbuildose) {break}
 	}
 	$eid = Start-Process $env:SYSTEMROOT\explorer.exe -PassThru
 	Start-Sleep -Seconds 2

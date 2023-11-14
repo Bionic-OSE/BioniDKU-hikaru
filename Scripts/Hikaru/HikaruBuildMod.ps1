@@ -5,7 +5,8 @@ $build = [System.Environment]::OSVersion.Version | Select-Object -ExpandProperty
 if ($build -le 10586) {$hkrbuildkey = "CurrentBuildNumber"} else {$hkrbuildkey = "BuildLab"}
 
 function Start-BuildStringMod {
-	Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name $hkrbuildkey -Value "?????.????_release.??????-????" -Type String -Force
+	$hkrbuildose = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").BuildLabOSE
+	Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name $hkrbuildkey -Value $hkrbuildose -Type String -Force
 }
 function Get-Explorer {
 	$sid = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ShellID

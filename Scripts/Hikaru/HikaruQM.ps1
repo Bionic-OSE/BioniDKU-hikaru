@@ -10,7 +10,17 @@ function Show-Branding {
 	$host.UI.RawUI.WindowTitle = "$prodname Quick Menu"
 	Clear-Host
 	Write-Host "$prodname Quick Menu" -ForegroundColor Black -BackgroundColor White
-	Write-Host ' '
+	Write-Host "Version $hikaru - (c) Bionic Butter`r`n" -ForegroundColor White
+}
+function Show-Greeting {
+	$Hour = (Get-Date).Hour
+	switch ($Hour) {
+		{$Hour -igt 04 -and  $Hour -ile 12} {return "Good Morning!"}
+		{$Hour -igt 13 -and $Hour -ile 16} {return "Good Afternoon!"}
+		{$Hour -igt 17 -and $Hour -ile 22} {return "Good Evening!"}
+		{$Hour -igt 23 -and $Hour -ile 03} {return "Sleep well."}
+		default {return "What do you want to do?"}
+	}
 }
 function Show-Menu {
 	Show-Branding
@@ -18,7 +28,8 @@ function Show-Menu {
 		$updateopt = "9. View update`r`n "
 		Write-Host "An update is available, select option 9 for more information`r`n" -ForegroundColor White
 	} else {$updateopt = "9. Check for updates`r`n "}
-	Write-Host "What do you want to do?`r`n" -ForegroundColor White
+	$greeter = Show-Greeting
+	Write-Host "$greeter`r`n" -ForegroundColor White
 	Write-Host " Shell tasks"
 	Write-Host " 1. Restart Explorer shell" -ForegroundColor White
 	Write-Host " 2. Change taskbar location" -ForegroundColor White
