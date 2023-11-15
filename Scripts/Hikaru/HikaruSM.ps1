@@ -44,7 +44,7 @@ while ($true) {
 			Write-Host "NOTE:" -ForegroundColor White -n; Write-Host "  The BioniDKU Menu Tray icon will not appear, but the key combo will still work."
 			Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\HikaruQML.exe"
 			Start-Process "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\AddressBarRemover2.exe"
-			Restart-HikaruShell -NoStop -NoSpin
+			Restart-HikaruShell -NoStop -NoSpin -HKBoot
 			exit
 		}
 		{$_ -like "2"} {Restart-OutOfSM}

@@ -6,7 +6,7 @@ switch ($sm) {
 	$false {
 		$ssv = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").StartupSoundVariant
 
-		Restart-HikaruShell -NoStop -NoSpin
+		Restart-HikaruShell -NoStop -NoSpin -HKBoot
 
 		taskkill /f /im FFPlay.exe
 		Start-Sleep -Seconds 1
