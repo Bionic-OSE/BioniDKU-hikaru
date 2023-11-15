@@ -42,4 +42,4 @@ call %systemdrive%\Bionic\Hikaru\Hikarun.bat
 rem --------------------------------------------
 
 rem Hikaru section
-powershell.exe %systemdrive%\Bionic\Hikaru\Hikaru.ps1
+pwsh.exe %systemdrive%\Bionic\Hikaru\Hikaru.ps1

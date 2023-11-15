@@ -54,11 +54,11 @@ function Get-SystemSwitches {
 function Switch-ShellState($action) {
 	gpupdate.exe
 	$action | Out-File -FilePath $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationControlAction.txt
-	Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'
+	Start-Process powershell -WindowStyle Hidden -ArgumentList "Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'"
 	if ($action -eq 1) {$actchk = $true} else {$actchk = $false}; $acting = $true
 	while ($acting) {
 		$actvrf = Test-Path -Path "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
-		if ($actvrf -eq $actchk) {$acting = $false} else {Start-Sleep -Seconds 1; Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'}
+		if ($actvrf -eq $actchk) {$acting = $false} else {Start-Sleep -Seconds 1; Start-Process powershell -WindowStyle Hidden -ArgumentList "Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'"}
 	}
 	Restart-HikaruShell
 }

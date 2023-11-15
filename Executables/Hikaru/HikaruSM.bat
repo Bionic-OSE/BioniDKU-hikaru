@@ -34,5 +34,5 @@
 @echo off
 
 title Preparing Safe Mode menu options...
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruSM.ps1
+pwsh.exe %systemdrive%\Bionic\Hikaru\HikaruSM.ps1
 exit

@@ -17,7 +17,11 @@ function Start-ShellSpinner {
 function Exit-HikaruShell($type) {
 	$sid = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ShellID
 	switch ($type) {
-		default {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\ExitExplorer.exe -WindowStyle Hidden; Wait-Process -Id $sid}
+		default {
+			Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\ExitExplorer.exe -WindowStyle Hidden
+			Start-Sleep -Seconds 1
+			taskkill /f /pid $sid # ExitExplorer.exe does exit Explorer, but in certain cases it can leave Explorer be a "ghost" process. Killing this is neccesary.
+		}
 		1 {taskkill /f /pid $sid}
 		2 {taskkill /f /im explorer.exe}
 	}
@@ -32,7 +36,7 @@ function Restart-HikaruShell {
 	)
 	if (-not $NoSpin) {Start-ShellSpinner}
 	if (-not $NoStop) {Write-Host "Now restarting Explorer..." -ForegroundColor White; Exit-HikaruShell $Method}
-	if ($HKBoot) {if (Check-SafeMode) {Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\HikaruBuildMod.exe"} else {Start-ScheduledTask -TaskName 'BioniDKU Windows Build String Modifier'}}
+	if ($HKBoot) {if (Check-SafeMode) {Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\HikaruBuildMod.exe"} else {Start-Process powershell -WindowStyle Hidden -ArgumentList "Start-ScheduledTask -TaskName 'BioniDKU Windows Build String Modifier'"}}
 	
 	$build = [System.Environment]::OSVersion.Version | Select-Object -ExpandProperty "Build"
 	if ($build -le 10586) {$hkrbuildkey = "CurrentBuildNumber"} else {$hkrbuildkey = "BuildLab"}
@@ -42,7 +46,7 @@ function Restart-HikaruShell {
 		if ($hkrbchkvar -eq $hkrbuildose) {break}
 	}
 	$eid = Start-Process $env:SYSTEMROOT\explorer.exe -PassThru
-	Start-Sleep -Seconds 2
+	Start-Sleep -Seconds 1
 	Set-ItemProperty "HKCU:\Software\Hikaru-chan" -Name ShellID -Value $eid.Id -Type String -Force
 }
 function Confirm-RestartShell {
