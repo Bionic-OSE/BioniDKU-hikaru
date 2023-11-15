@@ -34,5 +34,5 @@
 @echo off
 rem ####### Hikaru Windows Build String Mod by Bionic Butter #######
 
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruBuildMod.ps1
+pwsh.exe %systemdrive%\Bionic\Hikaru\HikaruBuildMod.ps1
 exit

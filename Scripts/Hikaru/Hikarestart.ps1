@@ -1,9 +1,9 @@
 # BioniDKU Quick/Administrative Menu Explorer restarting functions hive
 
-$hikaru = "400_stable"
+$hikaru = "400_beta6"
 
 function Check-SafeMode {
-	$sm = (gwmi win32_computersystem -Property BootupState).BootupState
+	$sm = (Get-CimInstance win32_computersystem -Property BootupState).BootupState
 	switch ($sm) {
 		"Normal boot" {return $false}
 		{$_ -like "Fail-safe*"} {return $true}

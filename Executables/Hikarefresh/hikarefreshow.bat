@@ -26,7 +26,7 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KrkIeVe4DXIrNyaSPI+Ve4kzvdIQ4hUZqmcgHDRxdbS75PF5k8CAQ5jC5H86Xsh30dmaM8XcYEm51lWbWni4oaNx/1MYb1kA=
+::Zh4grVQjdCyDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5awkmrH1KikyMPMaOtgnzT1uB6Vx+Hn1x5w==
 ::YB416Ek+Zm8=
 ::
 ::
@@ -37,4 +37,4 @@
 dir %systemdrive%\Bionic\Hikarefresh\hikarefreshow.ps1 > nul
 if %errorlevel%==1 exit
 
-powershell -Command "& $env:SYSTEMDRIVE\Bionic\Hikarefresh\hikarefreshow.ps1"
+pwsh.exe %systemdrive%\Bionic\Hikarefresh\hikarefreshow.ps1

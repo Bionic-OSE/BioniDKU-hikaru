@@ -26,7 +26,7 @@
 ::ZQ0/vhVqMQ3MEVWAtB9wSA==
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
-::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KrkIeVe4DXIrNyaSPI+Ve4kzvdIQ4hUZqmcgHDRxdbS75PF5k8CAQ5jC5H86Xsh30dmaM8XcYEm51lXaeiTM+AA==
+::Zh4grVQjdCuDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5ezMcoGVDpHHLMt+Z0w==
 ::YB416Ek+ZG8=
 ::
 ::
@@ -42,4 +42,4 @@ call %systemdrive%\Bionic\Hikaru\Hikarun.bat
 rem --------------------------------------------
 
 rem Hikaru section
-powershell %systemdrive%\Bionic\Hikaru\Hikaru.ps1
+pwsh.exe %systemdrive%\Bionic\Hikaru\Hikaru.ps1

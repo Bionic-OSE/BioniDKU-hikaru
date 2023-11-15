@@ -11,7 +11,7 @@ function Show-Branding {
 	$host.UI.RawUI.WindowTitle = "$prodname Administrative Menu"
 	Clear-Host
 	Write-Host "$prodname Administrative Menu" -ForegroundColor Black -BackgroundColor Magenta
-	Write-Host ' '
+	Write-Host "Version $hikaru - (c) Bionic Butter`r`n" -ForegroundColor White
 }
 function Show-Menu {
 	Show-Branding

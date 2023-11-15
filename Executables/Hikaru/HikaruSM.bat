@@ -33,6 +33,6 @@
 ::978f952a14a936cc963da21a135fa983
 @echo off
 
-title Windows PowerShell
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruSM.ps1
+title Preparing Safe Mode menu options...
+pwsh.exe %systemdrive%\Bionic\Hikaru\HikaruSM.ps1
 exit

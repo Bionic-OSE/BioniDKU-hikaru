@@ -33,8 +33,8 @@
 ::978f952a14a936cc963da21a135fa983
 @echo off
 
-title Windows PowerShell
+title Preparing Administrative Menu options...
 echo For security, to invoke this menu, please press any key.
 pause > nul
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruAM.ps1
+pwsh.exe %systemdrive%\Bionic\Hikaru\HikaruAM.ps1
 exit

@@ -1,7 +1,7 @@
 ::[Bat To Exe Converter]
 ::
 ::YAwzoRdxOk+EWAjk
-::fBw5plQjdCyDJHuR4FY1OidzRRC+HmK1CLw4w9225+OMo18IaMo2c47Jz4imKesS+Eznepg4xjRTm8Rs
+::fBw5plQjdCuDJHuR4FY1OidzRRC+HmK1CLw4w9225+OMo18IaMs8d4Hn8r2FIfIa6UrqYIZj33lV+A==
 ::YAwzuBVtJxjWCl3EqQJgSA==
 ::ZR4luwNxJguZRRnk
 ::Yhs/ulQjdF+5
@@ -37,4 +37,4 @@
 dir %systemdrive%\Bionic\Hikarefresh\hikarefresh.ps1 > nul
 if %errorlevel%==1 exit
 
-powershell -Command "& $env:SYSTEMDRIVE\Bionic\Hikarefresh\hikarefresh.ps1"
+pwsh.exe %systemdrive%\Bionic\Hikarefresh\hikarefresh.ps1

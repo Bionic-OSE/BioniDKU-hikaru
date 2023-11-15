@@ -33,6 +33,6 @@
 ::978f952a14a936cc963da21a135fa983
 @echo off
 
-title Windows PowerShell
-powershell.exe %systemdrive%\Bionic\Hikaru\HikaruQM.ps1
+title Preparing Quick Menu options...
+pwsh.exe %systemdrive%\Bionic\Hikaru\HikaruQM.ps1
 exit
