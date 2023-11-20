@@ -15,10 +15,10 @@ function Show-Branding {
 function Show-Greeting {
 	$Hour = (Get-Date).Hour
 	switch ($Hour) {
-		{$Hour -igt 04 -and  $Hour -ile 12} {return "Good Morning!"}
-		{$Hour -igt 13 -and $Hour -ile 16} {return "Good Afternoon!"}
-		{$Hour -igt 17 -and $Hour -ile 22} {return "Good Evening!"}
-		{$Hour -igt 23 -and $Hour -ile 03} {return "Sleep well."}
+		{$_ -ge 04 -and $_ -lt 12} {return "Good Morning!"}
+		{$_ -ge 12 -and $_ -lt 17} {return "Good Afternoon!"}
+		{$_ -ge 17 -and $_ -lt 22} {return "Good Evening!"}
+		{$_ -ge 22 -and $_ -lt 24 -or $_ -ge 00 -and $_ -lt 04} {return "Sleep well."}
 		default {return "What do you want to do?"}
 	}
 }
