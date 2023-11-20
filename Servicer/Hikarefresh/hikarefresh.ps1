@@ -32,7 +32,7 @@ elseif ($serviceremote -ne $servicer) {
 	if ((Test-Path -Path "$PSScriptRoot\Delivery\Servicer.7z") -eq $true) {Rename-Item -Path "$PSScriptRoot\Delivery\Servicer.7z" -NewName Servicer.7z.old}
 	Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\wget.exe -Wait -NoNewWindow -ArgumentList "https://github.com/Bionic-OSE/BioniDKU-hikaru/releases/latest/download/Servicer.7z" -WorkingDirectory "$PSScriptRoot\Delivery"
 		if (Test-Path -Path "$PSScriptRoot\Delivery\Servicer.7z" -PathType Leaf) {
-			Start-Process 7za -Wait -NoNewWindow -ArgumentList "x $PSScriptRoot\Delivery\Servicer.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa"
+			Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\7za.exe -Wait -NoNewWindow -ArgumentList "x $PSScriptRoot\Delivery\Servicer.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa"
 			Remove-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarefreshinFOLD.ps1" -Force
 			Rename-Item -Path "$env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshinfo.ps1" -NewName HikarefreshinFOLD.ps1
 			Start-Sleep -Seconds 1
