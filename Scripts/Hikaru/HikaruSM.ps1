@@ -1,7 +1,8 @@
 # BioniDKU Safe Mode Menu (codenamed "HikaruSM") - (c) Bionic Butter
 
 $prodname = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ProductName
-$sm = (gwmi win32_computersystem -Property BootupState).BootupState
+$abr = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").SystemABRState
+$sm = (Get-CimInstance win32_computersystem -Property BootupState).BootupState
 switch ($sm) {
 	"Normal boot" {exit}
 	"Fail-safe boot" {$smname = "Safe Mode"}
@@ -41,10 +42,10 @@ while ($true) {
 	switch ($unem) {
 		{$_ -like "1"} {
 			Show-Branding
-			Write-Host "NOTE:" -ForegroundColor White -n; Write-Host "  The BioniDKU Menu Tray icon will not appear, but the key combo will still work."
-			Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\HikaruQML.exe"
-			Start-Process "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\AddressBarRemover2.exe"
+			if ($abr -eq 1) {Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\AddressBarRemover2.exe"}
 			Restart-HikaruShell -NoStop -NoSpin -HKBoot
+			Start-Sleep -Seconds 1
+			Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\HikaruQML.exe"
 			exit
 		}
 		{$_ -like "2"} {Restart-OutOfSM}

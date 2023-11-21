@@ -21,6 +21,7 @@ function Show-Menu {
 	} else {$updateopt = "9. Check for updates`r`n "}
 	Write-Host "Becareful with what you are doing!`r`n" -ForegroundColor Magenta
 	$lock, $lockclr = Get-SystemSwitches
+	$abrs, $abrsclr = Touch-ABRState 0
 	Write-Host " Shell tasks"
 	Write-Host " 1. Restart Explorer shell" -ForegroundColor White
 	switch ($true) {
@@ -29,9 +30,10 @@ function Show-Menu {
 		default {Write-Host " 2. Supress shell restart animation*`r`n" -ForegroundColor White}
 	}
 	Write-Host " System tasks"
-	Write-Host " 3. Enable/Disable Lockdown (currently " -ForegroundColor White -n; Write-Host "$lock" -ForegroundColor $lockclr -n; Write-Host ")"
-	Write-Host " 4. Open a Command Prompt window" -ForegroundColor White
-	if ($lock -eq "DISABLED") {Write-Host " 5. Configure list of blocked applications`r`n" -ForegroundColor White} else {Write-Host "`r"}
+	Write-Host " 3. Toggle Lockdown (currently " -ForegroundColor White -n; Write-Host "$lock" -ForegroundColor $lockclr -n; Write-Host ")"
+	Write-Host " 4. Toggle Explorer Address bar (currently " -ForegroundColor White -n; Write-Host "$abrs" -ForegroundColor $abrsclr -n; Write-Host ")"
+	Write-Host " 5. Open a Command Prompt window" -ForegroundColor White
+	if ($lock -eq "DISABLED") {Write-Host " 6. Configure list of blocked applications`r`n" -ForegroundColor White} else {Write-Host "`r"}
 	Write-Host " Others"
 	Write-Host " ${updateopt}0. Close this menu`r`n" -ForegroundColor White
 }
@@ -51,14 +53,49 @@ function Get-SystemSwitches {
 	}
 	return $nall, $nclr
 }
+function Set-ABRValue($value,$switchrunstate) {
+	Set-ItemProperty "HKCU:\Software\Hikaru-chan" -Name SystemABRState -Value $value -Type DWord -Force
+	if ($switchrunstate -eq 1) {
+		switch ($value) {
+			default {Stop-Process AddressBarRemover2.exe -Force -ErrorAction SilentlyContinue}
+			1 {Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\AddressBarRemover2.exe"}
+		}
+	}
+}
+function Touch-ABRState($action) {
+	$abr = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").SystemABRState
+	switch ($action) {
+		0 {
+			switch ($abr) {
+				0 {$abst = 'SHOWN'; $aclr = 'Green'}
+				default {$abst = 'HIDDEN'; $aclr = 'Red'}
+			}
+			return $abst, $aclr
+		}
+		1 {
+			$lock = Get-SystemSwitches
+			switch ($abr) {
+				0 {if ($lock -eq 'DISABLED') {Set-ABRValue 2} else {Set-ABRValue 1 1}}
+				1 {Set-ABRValue 0 1}
+				2 {Set-ABRValue 0}
+			}
+		}
+	}
+}
 function Switch-ShellState($action) {
 	gpupdate.exe
 	$action | Out-File -FilePath $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationControlAction.txt
 	Start-Process powershell -WindowStyle Hidden -ArgumentList "Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'"
+	Write-Host "Sycning changes to the system... This may take up to 20 seconds." -ForegroundColor White
 	if ($action -eq 1) {$actchk = $true} else {$actchk = $false}; $acting = $true
 	while ($acting) {
 		$actvrf = Test-Path -Path "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
-		if ($actvrf -eq $actchk) {$acting = $false} else {Start-Sleep -Seconds 1; Start-Process powershell -WindowStyle Hidden -ArgumentList "Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'"}
+		if ($actvrf -eq $actchk) {$acting = $false} else {Start-Sleep -Seconds 5; Start-Process powershell -WindowStyle Hidden -ArgumentList "Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'"}
+	}
+	$actabr = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").SystemABRState 
+	switch ($action) {
+		1 {if ($actabr -eq 1) {Set-ABRValue 2 1}}
+		2 {if ($actabr -eq 2) {Set-ABRValue 1 1}}
 	}
 	Restart-HikaruShell
 }
@@ -103,7 +140,7 @@ function Start-CommandPrompt {
 	if ($lock -eq 'ENABLED') {
 		$syscmd = "/commandline `"/k cls`""
 	} else {
-		Write-Host "The build number will be " -n; Write-Host "IMMEDIATELY SHOWN" -ForegroundColor Yellow -n; Write-Host " upon launching this program. It is then " -n; Write-Host "YOUR RESPONSIBILTY`r`n to keep the secrets!" -ForegroundColor Yellow -n; Write-Host " If you can securely proceed:" -ForegroundColor White
+		Write-Host "The build number will be " -n; Write-Host "IMMEDIATELY SHOWN" -ForegroundColor Yellow -n; Write-Host " upon launching this program. It is then " -n; Write-Host "YOUR RESPONSIBILTY to keep `r`nthe secrets!" -ForegroundColor Yellow -n; Write-Host " If you can securely proceed:" -ForegroundColor White
 		$syscmd = $null
 	}
 	if ($isuacon -eq 1) {
@@ -127,6 +164,7 @@ function Start-CommandPrompt {
 function Start-EditLockedApps {
 	Show-Branding
 	Start-Process notepad.exe -Wait -ArgumentList "$env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestrict.reg"
+	Remove-Item "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\DisallowRun" -Recurse -Force
 	reg import "$env:SYSTEMDRIVE\Bionic\Hikaru\Hikarestrict.reg"
 }
 function Show-StaticSpinnerInfo {
@@ -145,8 +183,9 @@ while($true) {
 		{$_ -like "1"} {Confirm-RestartShell}
 		{$_ -like "2"} {if (-not (Check-SafeMode)) {$global:staticspinner = $true}}
 		{$_ -like "3"} {Switch-Lockdown}
-		{$_ -like "4"} {Start-CommandPrompt}
-		{$_ -like "5"} {
+		{$_ -like "4"} {Touch-ABRState 1}
+		{$_ -like "5"} {Start-CommandPrompt}
+		{$_ -like "6"} {
 			$lock = Get-SystemSwitches
 			if ($lock -eq "DISABLED") {Start-EditLockedApps}
 		}

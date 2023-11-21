@@ -1,7 +1,7 @@
 # BioniDKU Quick/Administrative Menu Explorer restarting functions hive
 
 $hikaveraw = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").Version
-$hikaru = $hikarveraw.Substring(5)
+$hikaru = $hikaveraw.Substring(6)
 
 function Check-SafeMode {
 	$sm = (Get-CimInstance win32_computersystem -Property BootupState).BootupState

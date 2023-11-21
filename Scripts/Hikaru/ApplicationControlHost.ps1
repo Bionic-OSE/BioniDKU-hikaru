@@ -1,6 +1,6 @@
 $action = Get-Content -Path $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationControlAction.txt
 
-switch ($action) {
+switch ([int32]$action) {
 	1 {
 		Copy-Item "$env:SYSTEMDRIVE\Bionic\Hikaru\wwahost.QUARANTINE" -Destination "$env:SYSTEMDRIVE\Windows\System32\wwahost.exe"
 		Copy-Item "$env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.QUARANTINE" -Destination "$env:SYSTEMDRIVE\Windows\System32\ApplicationFrameHost.exe"
