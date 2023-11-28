@@ -57,7 +57,7 @@ function Set-ABRValue($value,$switchrunstate) {
 	Set-ItemProperty "HKCU:\Software\Hikaru-chan" -Name SystemABRState -Value $value -Type DWord -Force
 	if ($switchrunstate -eq 1) {
 		switch ($value) {
-			default {Stop-Process AddressBarRemover2.exe -Force -ErrorAction SilentlyContinue}
+			default {Stop-Process -Name "AddressBarRemover2" -Force -ErrorAction SilentlyContinue}
 			1 {Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\AddressBarRemover2.exe"}
 		}
 	}
