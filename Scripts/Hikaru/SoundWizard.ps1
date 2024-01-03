@@ -12,17 +12,9 @@ function Start-PlaySound($type,$variant) {
 	Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe" -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\${type}Sound${variant}.mp3 -nodisp -hide_banner -autoexit -loglevel quiet"
 }
 function Set-SystemSound($variantno) {
-	switch ($variantno) {
-		1 {$variant = "9200"}
-		2 {$variant = "1k74"}
-	}
 	Write-Host "Changing sounds..." -ForegroundColor White
-	while ($true) {
-		Start-Sleep -Seconds 1
-		$testmedia = (Test-Path -Path "$env:SYSTEMDRIVE\Windows\Media\*")
-		if ($testmedia) {Remove-Item -Path $env:SYSTEMDRIVE\Windows\Media\* -Force -Recurse -ErrorAction SilentlyContinue} else {break}
-	}
-	Start-Process 7za -Wait -WindowStyle Hidden -ArgumentList "x $env:SYSTEMDRIVE\Windows\Media${variant}.zip -o$env:SYSTEMDRIVE\Windows\Media -aoa"
+	reg import "$env:SYSTEMDRIVE\Bionic\Hikaru\SystemSound${variantno}.reg"
+	Start-Sleep -Seconds 1
 }
 function Show-IPrompt($typeno,$maxvars,$typedisp) {
 	switch ($typeno) {
@@ -62,7 +54,7 @@ function Show-IPrompt($typeno,$maxvars,$typedisp) {
 $az = [char[]]('a'[0]..'z'[0])
 switch ($action) {
 	1 {$actioname = "sign-in sound"; $actionmax = 3}
-	2 {$actioname = "system sounds pack"; $actionmax = 2}
+	2 {$actioname = "system sounds pack"; $actionmax = 3}
 }
 
 Show-IPrompt $action $actionmax $actioname
