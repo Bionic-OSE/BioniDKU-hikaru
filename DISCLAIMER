@@ -1,0 +1,22 @@
+BioniDKU Menus System (codenamed Hikaru)
+Copyright (c) 2023-2024 Bionic Butter
+
+This free software is licensed under the GNU Affero General Public 
+License version 3 EXCEPT for the following components: 
+
+  All audio assets (.mp3, .wav files and .mp4 audio streams)
+  The icon found in executable files (Hikaru Aizawa's hair bow)
+
+These properties (which have been credited either on this project's main
+page, or in the BioniDKU script project) are NOT covered under this
+license  as they are NOT owned by Bionic Butter. 
+This software can function without these assets and you are allowed to
+add/swap them with your own alternatives.
+
+These third party programs are included as intergal parts of the core code:
+
+  GNU Wget (Copyright (c) 2017 Free Software Foundation, Inc)
+  7-Zip CLI (Copyright (c) 1999-2023 Igor Pavlov)
+  
+For 7-Zip, it is the exact same copy found in the script porject. Please
+refer to its disclaimer for its license file.
