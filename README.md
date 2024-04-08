@@ -5,4 +5,4 @@ The project's codename, Hikaru, is taken from Microsoft Taiwan's [Silverlight ma
 
 ![image](https://github.com/Bionic-OSE/BioniDKU-hikaru/assets/44027930/abe7a232-360c-420e-9f57-e3d2af438395)
 
-<sup>1. Though Silverlight has been discontinued, the team behind this character went split from Microsoft into a new company, developed a game in which she was [transformed](https://www.levelup.com/en/news/774759/Former-Microsoft-waifu-returns-and-you-can-invite-her-on-dates-in-this-game) into a new identity known as [Hoshiko Sanran](https://twitter.com/Iam_HoshiHikaru). This project's branding inspiration was specificaly derrived from the former identity instead of the new one.</sup>  
+<sup>1. Though Silverlight has been discontinued, the team behind this character went split from Microsoft into a new company, developed a game in which she was [transformed](https://www.levelup.com/en/news/774759/Former-Microsoft-waifu-returns-and-you-can-invite-her-on-dates-in-this-game) into a new identity known as [Hoshi Hikaru](https://twitter.com/Iam_HoshiHikaru). This project's branding inspiration was specificaly derrived from the former identity instead of the new one.</sup>  
