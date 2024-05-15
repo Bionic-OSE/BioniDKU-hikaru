@@ -11,9 +11,36 @@ function Check-SafeMode {
 	}
 }
 function Start-ShellSpinner {
+	[CmdletBinding()]
+	param (
+		[switch]$Overlay
+	)
+	
 	if ((Check-SafeMode) -or $staticspinner) {$n = "S"} else {$n = Get-Random -Minimum 1 -Maximum 6}
-	$global:SuwakoSpinner = Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\ShellSpinner$n.mp4 -fs -alwaysontop -noborder -autoexit" -PassThru
-	Start-Sleep -Seconds 1
+	if ($Overlay) {
+		$SuwakoVerlay = Start-Process $env:SYSTEMDRIVE\Windows\System32\scrnsave.scr -PassThru
+		$SuwakoVerlid = $SuwakoVerlay.Id
+		Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\PSSuspend64.exe" -WindowStyle Hidden -ArgumentList "$SuwakoVerlid /accepteula /nobanner"
+		Start-Sleep -Milliseconds 36
+	}
+	$SuwakoSpinner = Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\ShellSpinner$n.mp4 -fs -alwaysontop -autoexit" -PassThru
+	if ($Overlay) {
+		Start-Sleep -Seconds 1
+		return $SuwakoSpinner.Id, $SuwakoVerlid
+	} else {return}
+}
+function Discard-ShellSpinnerOverlay { 
+	# Use with Start -Overlay only
+	param (
+		[Parameter(Mandatory=$True,Position=0)]
+		[string]$SuwakoSpinner,
+		[Parameter(Mandatory=$True,Position=1)]
+		[string]$SuwakoVerlay
+	)
+	Clear-Host
+	Wait-Process $SuwakoSpinner
+	Stop-Process $SuwakoVerlay -Force
+	
 }
 function Exit-HikaruShell($type) {
 	$sid = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").ShellID
@@ -26,6 +53,7 @@ function Exit-HikaruShell($type) {
 		1 {taskkill /f /pid $sid}
 		2 {taskkill /f /im explorer.exe}
 	}
+	taskkill /f /im DesktopInfo.exe
 }
 function Restart-HikaruShell {
 	[CmdletBinding()]
@@ -44,11 +72,15 @@ function Restart-HikaruShell {
 	while ($true) {
 		$hkrbchkvar = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").$hkrbuildkey
 		$hkrbuildose = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").BuildLabOSE
-		if ($hkrbchkvar -eq $hkrbuildose) {break}
+		if ($hkrbchkvar -eq $hkrbuildose) {break} else {Start-Sleep -Seconds 1}
 	}
-	$eid = Start-Process $env:SYSTEMROOT\explorer.exe -PassThru
-	Start-Sleep -Seconds 1
-	Set-ItemProperty "HKCU:\Software\Hikaru-chan" -Name ShellID -Value $eid.Id -Type String -Force
+
+	if ($HKBoot) {
+		& $env:SYSTEMDRIVE\Bionic\Hikaru\HikarestartasUser.ps1
+	} else {
+		Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename $env:SYSTEMDRIVE\Windows\System32\WindowsPowerShell\v1.0\powershell.exe /runas 9 /runasusername $env:USERNAME /commandline `"& $env:SYSTEMDRIVE\Bionic\Hikaru\HikarestartasUser.ps1`""
+	}
+	Start-Sleep -Seconds 2
 }
 function Confirm-RestartShell {
 	Show-Branding
@@ -65,4 +97,17 @@ function Confirm-RestartShell {
 		{$_ -like "8"} {Show-Branding; Restart-HikaruShell -Method 1}
 		{$_ -like "9"} {Show-Branding; Restart-HikaruShell -Method 2}
 	}
+}
+function Start-UpdateCheckerFM {
+	param (
+		[Parameter(Mandatory=$True,Position=0)]
+		[string]$Menu
+	)
+	Show-Branding
+	Write-Host "The Menu will be closed during the update check and will reopen once it's complete. Please be patient." -ForegroundColor White
+	Start-Sleep -Seconds 5
+	
+	Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateCheckerLaunchedFrom" -Value "$Menu" -Type String -Force
+	Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefresh.exe
+	exit
 }

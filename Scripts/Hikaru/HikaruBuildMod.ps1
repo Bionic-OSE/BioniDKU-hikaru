@@ -6,6 +6,7 @@ if ($build -le 10586) {$hkrbuildkey = "CurrentBuildNumber"} else {$hkrbuildkey =
 
 function Start-BuildStringMod {
 	$hkrbuildose = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").BuildLabOSE
+	if ($hkrbuildose -eq $null) {Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name "BuildLabOSE" -Value "1????.????_release.??????-????" -Type String -Force}
 	Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name $hkrbuildkey -Value $hkrbuildose -Type String -Force
 }
 function Get-Explorer {

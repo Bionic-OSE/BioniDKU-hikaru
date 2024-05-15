@@ -26,7 +26,7 @@ function Show-Menu {
 	Show-Branding
 	if ($update -eq 1) {
 		$updateopt = "9. View update`r`n "
-		Write-Host "An update is available, select option 9 for more information`r`n" -ForegroundColor White
+		Write-Host "An update is available, select option 9 for more information`r`nTo recheck for updates, type `"9R`" and press Enter`r`n" -ForegroundColor White
 	} else {$updateopt = "9. Check for updates`r`n "}
 	$greeter = Show-Greeting
 	Write-Host "$greeter`r`n" -ForegroundColor White
@@ -69,7 +69,7 @@ function Set-TaskbarLocation {
 function Input-TaskbarLocation {
 	while ($true) {
 		Show-Branding
-		Write-Host "Move your taskbar without disabling lockdown using this option. The Explorer shell will be restarted for changes `r`nto take effect, which will close all of its windows.`r`n" -ForegroundColor White
+		Write-Host "Move your taskbar without disabling lockdown using this option. The Explorer shell will be restarted for changes `r`nto take effect. Your files windows will not be closed." -ForegroundColor White
 		Write-Host " Select a taskbar location"
 		Write-Host " 1. Top" -ForegroundColor White
 		Write-Host " 2. Bottom" -ForegroundColor White -n; Write-Host " (Windows default)"
@@ -85,7 +85,11 @@ function Input-TaskbarLocation {
 		}
 	}
 }
-function Start-RunDllCpl($param) {
+function Start-RunDllCpl {
+	param (
+		[Parameter(Mandatory=$True,Position=0)]
+		[string]$param
+	)
 	$ncp = (Get-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer").NoControlPanel
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 0 -Type DWord
 	Start-Process rundll32.exe -ArgumentList "$param"
@@ -97,22 +101,19 @@ while ($true) {
 	Show-Menu
 	Write-Host "> " -n; $unem = Read-Host
 	switch ($unem) {
-		{$_ -like "0"} {exit}
-		{$_ -like "1"} {Confirm-RestartShell}
-		{$_ -like "2"} {Input-TaskbarLocation}
-		{$_ -like "3"} {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1 1}
-		{$_ -like "4"} {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1 2}
-		{$_ -like "5"} {Start-RunDllCpl "shell32.dll,Control_RunDLL TimeDate.cpl,,0"}
-		{$_ -like "6"} {Start-RunDllCpl "shell32.dll,Control_RunDLL PowerCfg.cpl @0,/editplan:381b4222-f694-41f0-9685-ff5bb260df2e"}
-		{$_ -like "("} { # Hikaru beta, correct it back in Final please
+		"0" {exit}
+		"1" {Confirm-RestartShell}
+		"2" {Input-TaskbarLocation}
+		"3" {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1 1}
+		"4" {& $env:SYSTEMDRIVE\Bionic\Hikaru\SoundWizard.ps1 2}
+		"5" {Start-RunDllCpl "shell32.dll,Control_RunDLL TimeDate.cpl,,0"}
+		"6" {Start-RunDllCpl "shell32.dll,Control_RunDLL PowerCfg.cpl @0,/editplan:381b4222-f694-41f0-9685-ff5bb260df2e"}
+		"9" {
 			if ($update -eq 1) {
 				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshow.exe
 				exit
-			} else {
-				Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateCheckerLaunchedFrom" -Value "QM" -Type String -Force
-				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefresh.exe
-				exit
-			}
+			} else {Start-UpdateCheckerFM "QM"}
 		}
+		"9R" {Start-UpdateCheckerFM "QM"}
 	}
 }

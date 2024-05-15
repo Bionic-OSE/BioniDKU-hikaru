@@ -17,7 +17,7 @@ function Show-Menu {
 	Show-Branding
 	if ($update -eq 1) {
 		$updateopt = "9. View update`r`n "
-		Write-Host "An update is available, select option 9 for more information`r`n" -ForegroundColor White
+		Write-Host "An update is available, select option 9 for more information`r`nTo recheck for updates, type `"9R`" and press Enter" -ForegroundColor White
 	} else {$updateopt = "9. Check for updates`r`n "}
 	Write-Host "Becareful with what you are doing!`r`n" -ForegroundColor Magenta
 	$lock, $lockclr = Get-SystemSwitches
@@ -62,7 +62,11 @@ function Set-ABRValue($value,$switchrunstate) {
 		}
 	}
 }
-function Touch-ABRState($action) {
+function Touch-ABRState {
+	param (
+		[Parameter(Mandatory=$True,Position=0)]
+		[int32]$action
+	)
 	$abr = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").SystemABRState
 	switch ($action) {
 		0 {
@@ -82,7 +86,11 @@ function Touch-ABRState($action) {
 		}
 	}
 }
-function Switch-ShellState($action) {
+function Switch-ShellState {
+	param (
+		[Parameter(Mandatory=$True,Position=0)]
+		[int32]$action
+	)
 	gpupdate.exe
 	$action | Out-File -FilePath $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationControlAction.txt
 	Start-Process powershell -WindowStyle Hidden -ArgumentList "Start-ScheduledTask -TaskName 'BioniDKU UWP Lockdown Controller'"
@@ -103,11 +111,12 @@ function Switch-Lockdown {
 	Show-Branding
 	$lock = Get-SystemSwitches
 	if ($lock -eq 'ENABLED') {
-		Write-Host "This option will disable all application restrictions, unblock Settings, Control Panel, the taskbar context menu, `r`nand unhide the Windows version from Command Prompt. Use this option if you are the challenge host and want to do `r`nmaintenance on this system without having to go through Group Policy and disable the restrictions one by one."
-		Write-Host "Disabling Lockdown means " -n; Write-Host "the RESPONSIBILTY of keeping the secrets will be YOURS " -ForegroundColor White -n; Write-Host "until you enable them again. If you `r`ncan securely proceed, hit 1 and Enter to disable, or hit anything and Enter to go back."
-		Write-Host "Proceeding will also restart Explorer, which closes all opening Explorer windows.`r`n"
+		Write-Host "This option will disable all application restrictions, unblock Settings, Control Panel, the taskbar context menu, `r`nand unhide the Windows version from Command Prompt. Use this option if you are the challenge host and want to do `r`nmaintenance on this system without having to go through Group Policy and disable the restrictions one by one, or you `r`nare the contestant preparing to reveal this IDKU."
+		Write-Host "The Explorer shell will be restarted to apply changes. Your files windows will not be closed.`r`n"
+		Write-Host "If the time has not come yet, please " -n; Write-Host "BE CAREFUL with what you are about to do!" -ForegroundColor White
+		Write-Host 'ARE SURE YOU WANT TO DISABLE LOCKDOWN? Answer "yes" to disable, or anything else to go back.' -ForegroundColor Yellow
 		Write-Host "> " -n; $back = Read-Host
-		if ($back -ne 1) {return}
+		if ($back -notlike "yes") {return}
 
 		Show-Branding
 		Write-Host "Disabling Lockdown and applying changes..." -ForegroundColor White
@@ -118,10 +127,10 @@ function Switch-Lockdown {
 		Switch-ShellState 1
 		Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.cfg"
 	} else {
-		Write-Host "Reenable Lockdown? Hit 1 and Enter to enable, or hit anything and Enter to go back."
-		Write-Host "Proceeding will also restart Explorer, which closes all opening Explorer windows.`r`n"
+		Write-Host 'Reenable Lockdown? Answer "yes" and Enter to enable, or anything else to go back.'
+		Write-Host "The Explorer shell will be restarted to apply changes. Your files windows will not be closed.`r`n"
 		Write-Host "> " -n; $back = Read-Host
-		if ($back -ne 1) {return}
+		if ($back -notlike "yes") {return}
 		
 		Show-Branding
 		Write-Host "Enabling Lockdown and applying changes..." -ForegroundColor White
@@ -157,7 +166,7 @@ function Start-CommandPrompt {
 		1 {Start-Process $env:SYSTEMDRIVE\Windows\System32\cmd.exe}
 		2 {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename %SystemDrive%\Windows\System32\cmd.exe /runas 3"}
 		3 {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename %SystemDrive%\Windows\System32\cmd.exe $syscmd /runas 4"}
-		4 {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename %SystemDrive%\Windows\System32\cmd.exe $syscmd /runas 8"}
+		8 {Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run /exefilename %SystemDrive%\Windows\System32\cmd.exe $syscmd /runas 8"}
 		default {return}
 	}
 }
@@ -179,26 +188,27 @@ while($true) {
 	Show-Menu
 	Write-Host "> " -n; $unem = Read-Host
 	switch ($unem) {
-		{$_ -like "0"} {exit}
-		{$_ -like "1"} {Confirm-RestartShell}
-		{$_ -like "2"} {if (-not (Check-SafeMode)) {$global:staticspinner = $true}}
-		{$_ -like "3"} {Switch-Lockdown}
-		{$_ -like "4"} {Touch-ABRState 1}
-		{$_ -like "5"} {Start-CommandPrompt}
-		{$_ -like "6"} {
+		"0" {exit}
+		"1" {Confirm-RestartShell}
+		"2" {if (-not (Check-SafeMode)) {$global:staticspinner = $true}}
+		"3" {Switch-Lockdown}
+		"4" {Touch-ABRState 1}
+		"5" {Start-CommandPrompt}
+		"6" {
 			$lock = Get-SystemSwitches
 			if ($lock -eq "DISABLED") {Start-EditLockedApps}
 		}
-		{$_ -eq "*"} {Show-StaticSpinnerInfo}
-		{$_ -like "("} { # Hikaru beta, correct it back in Final please
+		{$_ -eq '*'} {Show-StaticSpinnerInfo}
+		"9" {
 			if ($update -eq 1) {
 				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshow.exe
 				exit
 			} else {
-				Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateCheckerLaunchedFrom" -Value "AM" -Type String -Force
-				Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefresh.exe
-				exit
+				Start-UpdateCheckerFM "AM"
 			}
+		}
+		"9R" {
+			Start-UpdateCheckerFM "AM"
 		}
 	}
 }
