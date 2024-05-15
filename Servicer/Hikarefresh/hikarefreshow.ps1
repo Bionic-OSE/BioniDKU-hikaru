@@ -5,9 +5,10 @@ function Show-WindowTitle($nc) {
 	$host.UI.RawUI.WindowTitle = "BioniDKU Menus System Updater$noclose"
 }
 function Show-Branding {
+	. $env:SYSTEMDRIVE\Bionic\Hikarefresh\ServicinFOLD.ps1
 	Clear-Host
 	Write-Host "BioniDKU Menus System Updater" -ForegroundColor Black -BackgroundColor White
-	Write-Host "Version 3.1 - (c) Bionic Butter`r`n" -ForegroundColor White
+	Write-Host "Version $servicer - (c) Bionic Butter`r`n" -ForegroundColor White
 }
 function Start-DownloadLoop($file) {
 	while ($true) {
@@ -34,34 +35,44 @@ function Start-Hikarefreshing($hv) {
 	Start-Process $env:SYSTEMDRIVE\Bionic\Hikarefresh\7za.exe -Wait -NoNewWindow -ArgumentList "x $PSScriptRoot\Delivery\Scripts.7z -pBioniDKU -o$env:SYSTEMDRIVE\Bionic -aoa"
 	if ($hv -eq 1) {
 		Start-DownloadLoop "Executables.7z"
-		Start-Process powershell -ArgumentList "-Command $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshard.ps1"
+		while ($true) {
+			try {
+				Start-Process powershell -Verb RunAs -ArgumentList "-Command $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshard.ps1"
+				break
+			} catch {
+				Write-Host "Please accept the UAC prompt to continue. (If you click No it will ask again, so Yes please)." -ForegroundColor White
+				continue
+			}
+		}
 	} else {& $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshvi.ps1}
 	exit
 }
 
-Show-WindowTitle 0
-Show-Branding
-Write-Host "An update is available:`r`n" -ForegroundColor White
+$update = (Get-ItemProperty -Path "HKCU:\Software\Hikaru-chan").UpdateAvailable
+if ($update -ne 1) {exit}
 
-. $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
-$versionremote = $version
-$minbaseremote = $minbase
-. $env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1
-Write-Host "Version: " -ForegroundColor White -n; Write-Host "$versionremote" -n; Write-Host " (You have: " -n; Write-Host "$version)"
-. $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
-Write-Host "Package size: " -ForegroundColor White -n; Write-Host "$size"
-Write-Host "Update information: " -ForegroundColor White -n; Write-Host "$descr"
-. $env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1
-
-Write-Host " "
-Write-Host "Select one of the following actions:" -ForegroundColor White
-Write-Host "1. Accept update" -ForegroundColor White
-Write-Host "0. Cancel and close this window" -ForegroundColor White
-Write-Host "> " -n; $act = Read-Host
-switch ($act) {
-	{$act -like "0"} {exit}
-	{$act -like "1"} {
-		if ($minbaseremote -notlike $minbase) {$hard = 1} else {$hard = 0}
-		Start-Hikarefreshing $hard
+while ($true) {
+	Show-WindowTitle 0
+	Show-Branding
+	Write-Host "An update is available:`r`n" -ForegroundColor White
+	
+	. $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
+	$versionremote = $version
+	$minbaseremote = $minbase
+	Write-Host "Menu System Version: " -ForegroundColor White -n; Write-Host "$versionremote"
+	Write-Host "Update size: " -ForegroundColor White -n; Write-Host "$size"
+	Write-Host "Update information: " -ForegroundColor White -n; Write-Host "$descr"
+	. $env:SYSTEMDRIVE\Bionic\Hikarefresh\HikarinFOLD.ps1
+	
+	Write-Host "`r`n Select an action:"
+	Write-Host " 1. Accept update" -ForegroundColor White
+	Write-Host " 0. Cancel and close this window`r`n" -ForegroundColor White
+	Write-Host "> " -n; $act = Read-Host
+	switch ($act) {
+		"0" {exit}
+		"1" {
+			if ($minbaseremote -notlike $minbase) {$hard = 1} else {$hard = 0}
+			Start-Hikarefreshing $hard
+		}
 	}
 }

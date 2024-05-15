@@ -1,3 +1,5 @@
+# Hikaru-chan version info updater - (c) Bionic Butter
+
 & $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarefreshed.ps1
 Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name "UpdateAvailable" -Value 0 -Type DWord -Force
 . $env:SYSTEMDRIVE\Bionic\Hikarefresh\Hikarinfo.ps1
