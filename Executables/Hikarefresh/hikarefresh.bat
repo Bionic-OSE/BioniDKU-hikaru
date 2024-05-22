@@ -14,12 +14,12 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJieEsaHWQ=
-::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbQs=
+::cxY6rQJ7JhzQF1fEqQJjZksaHErSXA==
+::ZQ05rAF9IBncCkqN+0xwdVsHAlTMbCXqZg==
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDCyLN2qoA7MO7fvzoe+fpy0=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSuLK/Up+Oz6++/HgUUYV+k6au8=
+::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSuXA7sJ+6jI9vmTp0BdYfI7eZvempeGJeMY71eE
 ::dhA7uBVwLU+EWHuN+0w5K1t2WRCWOXna
 ::YQ03rBFzNR3SWATElA==
 ::dhAmsQZ3MwfNWATElA==
@@ -31,10 +31,8 @@
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
-
 @echo off
-
-dir %systemdrive%\Bionic\Hikarefresh\hikarefresh.ps1 > nul
-if %errorlevel%==1 exit
+rem ####### Hikaru Background Update checker by Bionic Butter #######
 
 pwsh.exe %systemdrive%\Bionic\Hikarefresh\hikarefresh.ps1
+exit

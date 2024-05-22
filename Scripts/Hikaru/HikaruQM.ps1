@@ -31,11 +31,12 @@ function Show-Menu {
 	$greeter = Show-Greeting
 	Write-Host "$greeter`r`n" -ForegroundColor White
 	Write-Host " Shell tasks"
-	Write-Host " 1. Restart Explorer shell" -ForegroundColor White
+	Write-Host " 1. Restart Explorer shell`r`n" -ForegroundColor White
+	Write-Host " Personalize"
 	Write-Host " 2. Change taskbar location" -ForegroundColor White
 	Write-Host " 3. Change sign-in sound" -ForegroundColor White
 	Write-Host " 4. Change system sounds`r`n" -ForegroundColor White
-	Write-Host " Configure your device"
+	Write-Host " System settings"
 	Write-Host " 5. Adjust time settings" -ForegroundColor White
 	Write-Host " 6. Adjust power settings`r`n" -ForegroundColor White
 	Write-Host " Others"

@@ -124,6 +124,8 @@ function Switch-Lockdown {
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 0 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 0 -Type DWord
 		Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Command Processor" -Name Autorun
+		Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name LockDisp -Value "Lockdown is DISABLED!" -Type String -Force
+		Set-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name LockDispad -Value " " -Type String -Force
 		Switch-ShellState 1
 		Start-Process $env:SYSTEMDRIVE\Bionic\Hikaru\AdvancedRun.exe -ArgumentList "/run $env:SYSTEMDRIVE\Bionic\Hikaru\ApplicationFrameHost.cfg"
 	} else {
@@ -138,6 +140,8 @@ function Switch-Lockdown {
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoControlPanel -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" -Name NoTrayContextMenu -Value 1 -Type DWord
 		Set-ItemProperty -Path "HKCU:\Software\Microsoft\Command Processor" -Name Autorun -Value "cls" -Type String
+		Remove-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name LockDisp
+		Remove-ItemProperty -Path "HKCU:\Software\Hikaru-chan" -Name LockDispad
 		Switch-ShellState 2
 	}
 }

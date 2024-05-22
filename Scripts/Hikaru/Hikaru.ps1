@@ -17,12 +17,11 @@ switch ($sm) {
 		if ($abr -eq 1) {Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\AddressBarRemover2.exe"}
 		Restart-HikaruShell -NoStop -NoSpin -HKBoot
 
-		ttaskkill /f /pid $hkn
+		taskkill /f /pid $hkn
 		taskkill /f /pid $hkf
 		Start-Sleep -Milliseconds 128
 		Start-Process "$env:SYSTEMDRIVE\Bionic\Hikaru\FFPlay.exe" -WindowStyle Hidden -ArgumentList "-i $env:SYSTEMDRIVE\Bionic\Hikaru\StartupSound${ssv}.mp3 -nodisp -hide_banner -autoexit -loglevel quiet"
 		Start-Sleep -Seconds 1
-		Start-ScheduledTask -TaskName 'BioniDKU Hot Keys Service'
 	}
 	$true {
 		taskkill /f /pid $hkn

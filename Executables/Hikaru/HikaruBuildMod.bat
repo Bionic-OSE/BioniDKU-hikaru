@@ -14,12 +14,12 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJkeEsaHErScjva
-::ZQ05rAF9IBncCkqN+0xwdVsAHFTMbCXqSOV8
+::cxY6rQJ7JhzQF1fEqQJkeEsaHkrScjva
+::ZQ05rAF9IBncCkqN+0xwdVsAHFTMbiXqSOV8
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDGQ=
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSSDE6AR7eHfxN/HlUQTUO0oa8/5z72CJKAg/lfte5Ft+3VenM4ebA==
+::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSuND7sY5//or8iSq0EZFNEraobV3fSjL+QX71eE
 ::dhA7uBVwLU+EWHuN+0w5K1t2WRCWOXna
 ::YQ03rBFzNR3SWATElA==
 ::dhAmsQZ3MwfNWATElA==
@@ -34,5 +34,5 @@
 @echo off
 rem ####### Hikaru Windows Build String Mod by Bionic Butter #######
 
-pwsh.exe %systemdrive%\Bionic\Hikaru\HikaruBuildMod.ps1
+powershell %systemdrive%\Bionic\Hikaru\HikaruBuildMod.ps1
 exit

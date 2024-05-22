@@ -14,12 +14,12 @@
 ::dAsiuh18IRvcCxnZtBJQ
 ::cRYluBh/LU+EWAnk
 ::YxY4rhs+aU+IeA==
-::cxY6rQJ7JhzQF1fEqQJieEsaHWQ=
-::ZQ05rAF9IBncCkqN+0xwdVsGHFTMbQs=
+::cxY6rQJ7JhzQF1fEqQJjZksaHErSXA==
+::ZQ05rAF9IBncCkqN+0xwdVsHAlTMbCXqZg==
 ::ZQ05rAF9IAHYFVzEqQJQ
 ::eg0/rx1wNQPfEVWB+kM9LVsJDCyLN2qoA7MO7fvz4P3Jp1UYNA==
 ::fBEirQZwNQPfEVWB+kM9LVsJDGQ=
-::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSuLE7wf46jW6uSS4ngNUOMrfZ27
+::cRolqwZ3JBvQF1fEqQISIRRaRSCpCSuXA7sJ+6jI9vmTp0BdYfI7eZveyNQ=
 ::dhA7uBVwLU+EWHuN+0w5K1t2WRCWOXna
 ::YQ03rBFzNR3SWATElA==
 ::dhAmsQZ3MwfNWATElA==
@@ -27,12 +27,12 @@
 ::Zg8zqx1/OA3MEVWAtB9wSA==
 ::dhA7pRFwIByZRRnk
 ::Zh4grVQjdCyDJHuR4FY1OidzRRCOPWmGJLwT5uHfxN/KpF8cWecod53Q5paHL+4azm7ROJ4k3XtIjcYHMDNRdRO5awkmrH1KikyMPMaOtgnzT1uB6Vx+Hn1x5w==
-::YB416Ek+Zm8=
+::YB416Ek+ZW8=
 ::
 ::
 ::978f952a14a936cc963da21a135fa983
-
 @echo off
+rem ####### Hikaru Updater by Bionic Butter #######
 
 dir %systemdrive%\Bionic\Hikarefresh\hikarefreshow.ps1 > nul
 if %errorlevel%==1 exit

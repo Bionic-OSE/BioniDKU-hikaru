@@ -1,6 +1,6 @@
 # Hikaru-chan background update checker - (c) Bionic Butter
 
-$hkv = "31"
+$hkv = "32"
 
 function Show-NotifyBalloon {
 	param (
